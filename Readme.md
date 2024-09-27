@@ -1,6 +1,5 @@
-## This is a local repo
-I'm just initializing it to learn how to manage repos locally
-This is a chnge made in the feature branch
+## Now this is my lab Cheat Code copy area
+Enjoy guys all the lab programs are uploaded here......
 ```c
 #include<stdio.h>
 #include<stdlib.h>
