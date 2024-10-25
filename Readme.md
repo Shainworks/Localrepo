@@ -1,6 +1,6 @@
 ## Now this is my lab Cheat Code copy area
 Enjoy guys all the lab programs are uploaded here......
-##2nd lab set
+## 2nd lab set
 ```c
 #include<stdio.h>
 #include<stdlib.h>
@@ -138,7 +138,7 @@ struct node *delete_node(struct node *start) {
     }
 }
 ```
-##3rd labset
+## 3rd labset
 ```c
 #include<stdio.h>
 #include<stdlib.h>
@@ -325,6 +325,7 @@ System.out.println("hour of " + b.toString() + " is"+b.getHour()); System.out.pr
 
 }
 ```
+## ae java wala hai
 ```java
 import java.util.*;
 
@@ -446,7 +447,7 @@ public class Main {
     }
 }
 ```
-##ooa lowde ae 4th labset hai 
+## ooa lowde ae 4th labset hai 
 ```c
 #include<stdio.h>
 #include<stdlib.h>
@@ -621,7 +622,7 @@ struct node *add_node(struct node *start,int n,int c)
    return start;
 }
 ```
-##aur ae wala 5th hai maze kr
+## aur ae wala 5th hai maze kr
 ```c
 #include<stdio.h>
 #include<conio.h>
