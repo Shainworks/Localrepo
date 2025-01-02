@@ -1,1116 +1,480 @@
-## Now this is my lab Cheat Code copy area
-Enjoy guys all the lab programs are uploaded here......
-## 2nd lab set
-```c
-#include<stdio.h>
-#include<stdlib.h>
-#include<conio.h>
-#include<malloc.h>
+## Sorting Java
+```java
+import java.util.Arrays;
 
-struct node {
-    int data;
-    struct node *next;
-};
+class Sort {
+    // Generic method to arrange (sort) the array
+    public <T extends Comparable<T>> void Arrange(T[] array) {
+        Arrays.sort(array);
+    }
 
-struct node *start=NULL;
-struct node *create_ll(struct node *);
-struct node *display(struct node *);
-struct node *insert_beg(struct node *);
-struct node *insert_end(struct node *);
-struct node *delete_node(struct node *);
-
-int main() {
-    int option;
-    do {
-        printf("\n\n ******** MAIN MENU*******");
-        printf("\n 1: Create a list");
-        printf("\n 2: Display the list");
-        printf("\n 3: Insert beginning");
-        printf("\n 4: Insert end");
-        printf("\n 5: Delete A specified node");
-        printf("\n\n Enter your option:");
-        scanf("%d",&option);
-
-        switch(option) {
-            case 1: start=create_ll(start);
-                    printf("\nLinked list created");
-                    break;
-            case 2: start=display(start);
-                    break;
-            case 3: start=insert_beg(start);
-                    break;
-            case 4: start=insert_end(start);
-                    break;
-            case 5: start=delete_node(start);
-                    break;
+    // Generic method to display the array
+    public <T> void Display(T[] array) {
+        for (T element : array) {
+            System.out.print(element + " ");
         }
-    } while(option!=6);
-
-    getch();
-    return 0;
-}
-
-struct node *create_ll(struct node *start) {
-    struct node *new_node,*ptr;
-    int num;
-    printf("\n Enter -1 to end");
-    printf("\n Enter the data:");
-    scanf("%d",&num);
-    while(num != -1) {
-        new_node = (struct node*) malloc(sizeof(struct node));
-        new_node->data = num;
-        if(start == NULL) {
-            new_node->next = NULL;
-            start = new_node;
-        } else {
-            ptr = start;
-            while(ptr->next != NULL)
-                ptr = ptr->next;
-            ptr->next = new_node;
-            new_node->next = NULL;
-        }
-        printf("Enter the data :");
-        scanf("%d",&num);
+        System.out.println();
     }
-    return start;
 }
 
-struct node *display(struct node *start) {
-    struct node *ptr;
-    ptr = start;
-    if(ptr == NULL) {
-        printf("\nList is empty");
-        return 0;
-    }
-    while(ptr != NULL) {
-        printf("\t %d", ptr->data);
-        ptr = ptr->next;
-    }
-    return start;
-}
-
-struct node *insert_beg(struct node *start) {
-    struct node *new_node;
-    int num;
-    printf("\n Enter the data");
-    scanf("%d",&num);
-    new_node = (struct node *)malloc(sizeof(struct node));
-    new_node->data = num;
-    new_node->next = start;
-    start = new_node;
-    return start;
-}
-
-struct node *insert_end(struct node *start) {
-    struct node *ptr, *new_node;
-    int num;
-    printf("\n Enter the data");
-    scanf("%d",&num);
-    new_node = (struct node *)malloc(sizeof(struct node));
-    new_node->data = num;
-    new_node->next = NULL;
-    ptr = start;
-    while(ptr->next != NULL) {
-        ptr = ptr->next;
-    }
-    ptr->next = new_node;
-    return start;
-}
-
-struct node *delete_node(struct node *start) {
-    struct node *ptr, *preptr;
-    int val;
-    printf("\n Enter the value of the node which has to be deleted:");
-    scanf("%d",&val);
-    ptr = start;
-    if(ptr->data == val) {
-        start = start->next;
-        free(ptr);
-        return start;
-    } else {
-        while(ptr->data != val) {
-            preptr = ptr;
-            ptr = ptr->next;
-        }
-        preptr->next = ptr->next;
-        free(ptr);
-        return start;
+public class GenericSortExample {
+    public static void main(String[] args) {
+        Sort sorter = new Sort();
+        
+        // Integer array
+        Integer[] intArray = {5, 3, 8, 1, 9};
+        System.out.println("Original Integer Array: ");
+        sorter.Display(intArray);
+        sorter.Arrange(intArray);
+        System.out.println("Sorted Integer Array: ");
+        sorter.Display(intArray);
+        
+        // String array
+        String[] strArray = {"Banana", "Apple", "Cherry", "Date"};
+        System.out.println("\nOriginal String Array: ");
+        sorter.Display(strArray);
+        sorter.Arrange(strArray);
+        System.out.println("Sorted String Array: ");
+        sorter.Display(strArray);
+        
+        // Double array
+        Double[] doubleArray = {2.5, 3.7, 1.2, 4.8, 0.9};
+        System.out.println("\nOriginal Double Array: ");
+        sorter.Display(doubleArray);
+        sorter.Arrange(doubleArray);
+        System.out.println("Sorted Double Array: ");
+        sorter.Display(doubleArray);
     }
 }
 ```
-## 3rd labset
-```c
-#include<stdio.h>
-#include<stdlib.h>
-#include<conio.h>
-#include<malloc.h>
-#include<string.h>
-struct node
-{
-struct node *prev;
-int book_id;
-char book_title[10];
-char author[20];
-int edition;
-struct node *next;
-};
-struct node *start=NULL;
-struct node *create_ll(struct node *);
-struct node *display(struct node *);
-struct node *count_node(struct node *);
-struct node *delete_pos(struct node *);
-int main()
-{
-int option;
-clrscr();
-do
-{
-printf("\n\n ******** MAIN MENU*******");
-printf("\n 1: Create a list");
-printf("\n 2: Display the list");
-printf("\n 3: Count nodes");
-printf("\n 4: Delete postion");
-printf("\n\n Enter your option:");
-scanf("%d",&option);
-switch(option)
-{
-case 1: start=create_ll(start);
-printf("\nDoubly Linked list created");
-break;
-case 2: start=display(start);
-break;
-case 3: start=count_node(start);
-break;
-case 4: start=delete_pos(start);
-break;
+## MultiThread Java
+```Java
+import java.util.Random;
+
+class GenerateNumber implements Runnable {
+    public void run() {
+        Random random = new Random();
+        while (true) {
+            int number = random.nextInt(100);
+            System.out.println("Generated Number: " + number);
+
+            if (number % 2 == 0) {
+                new Thread(new SquareNumber(number)).start();
+            } else {
+                new Thread(new CubeNumber(number)).start();
+            }
+
+            try {
+                Thread.sleep(1000); // Sleep for 1 second
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }
+        }
+    }
 }
-}while(option!=5);
-getch();
-return 0;
+
+class SquareNumber implements Runnable {
+    private int number;
+
+    SquareNumber(int number) {
+        this.number = number;
+    }
+
+    public void run() {
+        System.out.println("Square of " + number + " is " + (number * number));
+    }
 }
-struct node *create_ll(struct node *start)
-{
-struct node *new_node,*ptr,*preptr;
-int book_id,edition;
-char book_title[10],author[20];
-printf("\n EnterBokk id as -1 to end");
-printf("\n Enter the Book Id:");
-scanf("%d",&book_id);
-printf("\n Enter the Book Title:");
-scanf("%s",book_title);
-printf("\n Enter the Author:");
-scanf("%s",author);
-printf("\n Enter the Book Edition:");
-scanf("%d",&edition);
-while(book_id!=-1)
-{
-new_node=(struct node*) malloc(sizeof(struct node));
-new_node->prev=NULL;
-new_node->book_id=book_id;
-strcpy(new_node->book_title,book_title);
-strcpy(new_node->author,author);
-new_node->edition=edition;
-new_node->next=NULL;
-if(start==NULL)
-{
-start=new_node;
+
+class CubeNumber implements Runnable {
+    private int number;
+
+    CubeNumber(int number) {
+        this.number = number;
+    }
+
+    public void run() {
+        System.out.println("Cube of " + number + " is " + (number * number * number));
+    }
 }
-else
-{
-ptr=start;
-preptr=NULL;
-while(ptr!=NULL&& book_id> ptr->book_id)
-{
-preptr=ptr;
-ptr=ptr->next;
-}
-preptr->next=new_node;
-new_node->next=ptr;
-}
-printf("Enter the Bookid:");
-scanf("%d",&book_id);
-if(book_id==-1)
-break;
-printf("\n Enter the Book Title:");
-scanf("%s",book_title);
-printf("\n Enter the Author:");
-scanf("%s",author);
-printf("\n Enter the Book Edition:");
-scanf("%d",&edition);
-}
-return start;
-}
-struct node *display(struct node *start)
-{
-struct node *ptr;
-ptr=start;
-if(ptr==NULL)
-{
-printf("\nList is empty");
-return 0;
-}
-while(ptr !=NULL)
-{
-printf("\t %d",ptr->book_id);
-printf("\t %s",ptr->book_title);
-printf("\t %s",ptr->author);
-printf("\t %d",ptr->edition);
-ptr=ptr->next;
-}
-return start;
-}
-struct node *count_node(struct node *start)
-{
-struct node *ptr;
-int count=0;
-ptr=start;
-while(ptr!=NULL)
-{
-ptr=ptr->next;
-count++;
-}
-printf("\nTotal Numbers of node=%d",count);
-return start;
-}
-struct node *delete_pos(struct node *start)
-{
-struct node *ptr,*preptr,*temp;
-int i,pos;
-printf("Enter the postion");
-scanf("%d",&pos);
-temp=start;
-for(i=1;i<pos && temp !=NULL;i++)
-{
-preptr=temp;
-temp=temp->next;
-ptr=temp->next;
-}
-if(temp!=NULL)
-{
-preptr->next=ptr;
-ptr->prev=preptr;
-free(temp);
-}
-else
-{
-printf("\nEnter valid postion");
-}
-return start;
+
+public class MultiThreadedApp {
+    public static void main(String[] args) {
+        Thread generateThread = new Thread(new GenerateNumber());
+        generateThread.start();
+    }
 }
 ```
-```java
-## ae java wala hai
-```java
-import java.util.*;
+## Exception handling Java
+```Java
+import java.util.Scanner;
 
-class Account {
-    public String acc_name;
-    public double acc_no;
-    public int acc_type;
-    public double balance;
+public class ExceptionHandling {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Choose an exception to handle:");
+        System.out.println("1. ArithmeticException");
+        System.out.println("2. ArrayIndexOutOfBoundsException");
+        System.out.println("3. NumberFormatException");
+        System.out.println("4. StringIndexOutOfBoundsException");
+        System.out.println("5. NullPointerException");
+        
+        int choice = scanner.nextInt();
+        
+        switch(choice) {
+            case 1:
+                try {
+                    System.out.println("Enter numerator and denominator:");
+                    int numerator = scanner.nextInt();
+                    int denominator = scanner.nextInt();
+                    int result = numerator / denominator;
+                    System.out.println("Result: " + result);
+                } catch (ArithmeticException e) {
+                    System.out.println("Error: Division by zero is not allowed.");
+                }
+                break;
+                
+            case 2:
+                try {
+                    int[] array = {1, 2, 3};
+                    System.out.println("Enter index:");
+                    int index = scanner.nextInt();
+                    System.out.println("Element at index " + index + ": " + array[index]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Error: Array index is out of bounds.");
+                }
+                break;
+                
+            case 3:
+                try {
+                    System.out.println("Enter a number:");
+                    String input = scanner.next();
+                    int number = Integer.parseInt(input);
+                    System.out.println("Number: " + number);
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Invalid number format.");
+                }
+                break;
+                
+            case 4:
+                try {
+                    System.out.println("Enter a string:");
+                    String str = scanner.next();
+                    System.out.println("Enter index:");
+                    int index = scanner.nextInt();
+                    char ch = str.charAt(index);
+                    System.out.println("Character at index " + index + ": " + ch);
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Error: String index is out of bounds.");
+                }
+                break;
+                
+            case 5:
+                try {
+                    String str = null;
+                    System.out.println("Length of the string: " + str.length());
+                } catch (NullPointerException e) {
+                    System.out.println("Error: Null pointer exception.");
+                }
+                break;
+                
+            default:
+                System.out.println("Invalid choice.");
+        }
+        
+        scanner.close();
+    }
+}
+```
+## 7th labset Java
+```java
+import java.util.Scanner;
 
-    public void getdata(String name, double no, int type, double bal) {
-        acc_name = name;
-        acc_no = no;
-        acc_type = type;
-        balance = bal;
+class circle {
+    double radius;
+    String color;
+
+    circle() {
+        radius = 1.0;
+        color = "blue";
+    }
+
+    circle(double radius) {
+        this.radius = radius;
+        color = "blue";
+    }
+
+    circle(double radius, String color) {
+        this.radius = radius;
+        this.color = color;
+    }
+
+    double getarea() {
+        return Math.PI * radius * radius;
+    }
+
+    double getradius() {
+        return radius;
+    }
+
+    String getcolor() {
+        return color;
     }
 }
 
-class Savings extends Account {
-    public void deposit(double amt) {
-        balance = balance + amt;
-        System.out.println(balance);
+class cylinder extends circle {
+    double height;
+
+    double getheight() {
+        return height;
     }
 
-    public void withdraw(double amt) {
-        balance = balance - amt;
-        System.out.println(balance);
+    cylinder() {
+        super();
+        height = 2.0;
     }
 
-    public void interest(int time, int no) {
-        double intr = balance * (1 + 6.0 / 100);
-        intr = Math.pow(intr, (time * no));
-        System.out.println("Interest calculated is: " + intr);
-        balance = balance + intr;
-        System.out.println("The new balance is: " + balance);
-    }
-}
-
-class Current extends Account {
-    public void deposit(double amt) {
-        balance = balance + amt;
-        System.out.println(balance);
+    cylinder(double height) {
+        super();
+        this.height = height;
     }
 
-    public void withdraw(double amt) {
-        balance = balance - amt;
-        System.out.println(balance);
-        check(balance);
+    cylinder(double height, double radius) {
+        super(radius);
+        this.height = height;
     }
 
-    public void check(double amt) {
-        if (amt < 10000) {
-            balance = balance - 500;
-            System.out.println("Insufficient Balance, penalty applied. New balance: " + balance);
+    cylinder(double height, double radius, String color) {
+        super(radius, color);
+        this.height = height;
+    }
+
+    double getarea() {
+        return (2 * Math.PI * radius * height) + (2 * Math.PI * radius * radius);
+    }
+
+    double getvolume() {
+        return super.getarea() * height;
+    }
+
+    void display() {
+        System.out.println("Radius is " + super.radius + ", Height is " + height + ", Color is " + super.color + ", Area is " + getarea() + ", Volume is " + getvolume());
+    }
+
+    void check(cylinder c1, cylinder c2, int i, int j) {
+        if (c1.radius == c2.radius && c1.height == c2.height && c1.color.equalsIgnoreCase(c2.color)) {
+            System.out.println("The cylinders " + (i + 1) + " and " + (j + 1) + " are similar");
         }
     }
 }
 
 public class Main {
-    public static void main(String args[]) {
-        Scanner sc = new Scanner(System.in);
-        int temp = 1;
-        while (temp == 1) {
-            System.out.println("Enter name: ");
-            String name = sc.nextLine();
-            System.out.println("Enter acc_no: ");
-            double no = sc.nextDouble();
-            System.out.println("Enter acc type (0 for Savings, 1 for Current): ");
-            int type = sc.nextInt();
-            double amt = 0;
-            do {
-                System.out.println("Enter balance: ");
-                amt = sc.nextDouble();
-            } while (type == 1 && amt < 10000);
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        cylinder[] c = new cylinder[4];
 
-            if (type == 0) {
-                Savings s = new Savings();
-                s.getdata(name, no, type, amt);
+        c[0] = new cylinder();
+        c[1] = new cylinder(3.0);
+        c[2] = new cylinder(3.0, 4.0);
+        c[3] = new cylinder(3.0, 4.0, "Green");
 
-                System.out.println("\n1. Deposit\n2. Withdraw\n3. Interest");
-                int temp3 = sc.nextInt();
+        System.out.println("Enter the details of cylinder 4 (height, radius, and color):");
+        double h = s.nextDouble();
+        double r = s.nextDouble();
+        String str = s.next();
 
-                if (temp3 == 1) {
-                    System.out.println("Enter Amount: ");
-                    double amt1 = sc.nextDouble();
-                    s.deposit(amt1);
-                } else if (temp3 == 2) {
-                    System.out.println("Enter Amount: ");
-                    double amt1 = sc.nextDouble();
-                    s.withdraw(amt1);
-                } else if (temp3 == 3) {
-                    System.out.println("Enter time period: ");
-                    int tp = sc.nextInt();
-                    System.out.println("Enter number of times: ");
-                    int nof = sc.nextInt();
-                    s.interest(tp, nof);
-                }
-            } else if (type == 1) {
-                Current c = new Current();
-                c.getdata(name, no, type, amt);
+        c[3] = new cylinder(h, r, str);
 
-                System.out.println("\n1. Deposit\n2. Withdraw");
-                int temp3 = sc.nextInt();
-
-                if (temp3 == 1) {
-                    System.out.println("Enter Amount: ");
-                    double amt1 = sc.nextDouble();
-                    c.deposit(amt1);
-                } else if (temp3 == 2) {
-                    System.out.println("Enter Amount: ");
-                    double amt1 = sc.nextDouble();
-                    c.withdraw(amt1);
-                }
-            }
-
-            System.out.println("To continue enter 1, else 0");
-            temp = sc.nextInt();
+        for (int i = 0; i < 4; i++) {
+            System.out.print("The dimensions of cylinder " + (i + 1) + " is ");
+            c[i].display();
         }
-        sc.close();
-    }
-}
-```
-## ooa lowde ae 4th labset hai 
-```c
-#include<stdio.h>
-#include<stdlib.h>
-#include<conio.h>
-#include<malloc.h>
-#include<math.h>
-struct node
-{
-   int num;
-   int coeff;
-   struct node *next;
-};
-struct node *start1=NULL;
-struct node *start2=NULL;
-struct node *start3=NULL;
-struct node *start4=NULL;
-struct node *create_poly(struct node *);
-struct node *display_poly(struct node *);
-struct node *add_poly(struct node *,struct node *,struct node *);
-struct node *add_node(struct node *,int,int);
-void evaluate(struct node *);
-int main()
-{
-   int option;
-   clrscr();
-   do
-   {
-      printf("\n\n ******** MAIN MENU*******");
-      printf("\n 1: Enter the First Polynomial");
-      printf("\n 2: Display the First Polynomial");
-      printf("\n 3: Enter the Second Polynomial ");
-      printf("\n 4: Display the Second Polynomial");
-      printf("\n 5: Add the polnomials");
-      printf("\n 6:Display the Result");
-      printf("\n\n Enter your option:");
-      scanf("%d",&option);
-      switch(option)
-      {
-	 case 1: start1=create_poly(start1);
-		 break;
-	 case 2: start1=display_poly(start1);
-		 break;
-	 case 3: start2=create_poly(start2);
-		 break;
-	 case 4: start2=display_poly(start2);
-		 break;
-	 case 5: start3=add_poly(start1,start2,start3);
-		 break;
-	 case 6: start3=display_poly(start3);
-		 break;
-	 }
-   }while(option!=7);
-   getch();
-   return 0;
-}
-struct node *create_poly(struct node *start)
-{
-    struct node *new_node,*ptr;
-    int n,c;
-    printf("\n Enter the number:");
-    scanf("%d",&n);
-    printf("\t Enter its coefficient:");
-    scanf("%d",&c);
-    while(n !=-1)
-    {
 
-       if(start==NULL)
-       {
-	 new_node=(struct node*) malloc(sizeof(struct node));
-	 new_node->num=n;
-	 new_node->coeff=c;
-	 new_node->next=NULL;
-	 start=new_node;
-       }
-       else
-       {
-	  ptr=start;
-	  while(ptr->next !=NULL)
-	    ptr=ptr->next;
-	    new_node=(struct node*) malloc(sizeof(struct node));
-	    new_node->num=n;
-	    new_node->coeff=c;
-	    ptr->next=new_node;
-	    new_node->next=NULL;
-	}
-	printf("Enter the number :");
-	scanf("%d",&n);
-	if(n==-1)
-	 break;
-	printf("\t Enter its Coefficient");
-	scanf("%d",&c);
+        for (int i = 0; i < 4; i++) {
+            for (int j = i + 1; j < 4; j++) {
+                c[i].check(c[i], c[j], i, j);
+            }
+        }
     }
-    return start;
-}
-struct node *display_poly(struct node *start)
-{
-   struct node *ptr;
-   ptr=start;
-   while(ptr !=NULL)
-   {
-      printf("\n %d x %d\t",ptr->num,ptr->coeff);
-      ptr=ptr->next;
-   }
-   return start;
-}
-
-struct node *add_poly(struct node *start1,struct node *start2,struct node *start3)
-{
-    struct node *ptr1,*ptr2;
-    int sum_num,c;
-    ptr1=start1,ptr2=start2;
-    while(ptr1 !=NULL && ptr2 !=NULL)
-    {
-       if(ptr1->coeff ==ptr2->coeff)
-	 {
-	   sum_num=ptr1->num+ptr2->num;
-	   start3=add_node(start3,sum_num,ptr1->coeff);
-	   ptr1=ptr1->next;
-	   ptr2=ptr2->next;
-	  }
-	else if (ptr1->coeff > ptr2->coeff)
-	  {
-	   start3=add_node(start3,ptr1->num,ptr1->coeff);
-	   ptr1=ptr1->next;
-	  }
-	else if (ptr1->coeff < ptr2->coeff)
-	{
-	   start3=add_node(start3,ptr2->num,ptr2->coeff);
-	   ptr2=ptr2->next;
-	}
-    }
-    if(ptr1 ==NULL)
-    {
-       while(ptr2!=NULL)
-	{
-	 start3=add_node(start3,ptr2->num,ptr2->coeff);
-	   ptr2=ptr2->next;
-	}
-    }
-    if(ptr2 ==NULL)
-    {
-       while(ptr1!=NULL)
-	{
-	 start3=add_node(start3,ptr1->num,ptr1->coeff);
-	   ptr1=ptr1->next;
-	}
-    }
-    return start3;
-}
-struct node *add_node(struct node *start,int n,int c)
-{
-  struct node *ptr,*new_node;
-  if(start==NULL)
-       {
-	 new_node=(struct node*) malloc(sizeof(struct node));
-	 new_node->num=n;
-	 new_node->coeff=c;
-	 new_node->next=NULL;
-	 start=new_node;
-       }
-       else
-       {
-	  ptr=start;
-	  while(ptr->next !=NULL)
-	    ptr=ptr->next;
-	    new_node=(struct node*) malloc(sizeof(struct node));
-	    new_node->num=n;
-	    new_node->coeff=c;
-	    ptr->next=new_node;
-	    new_node->next=NULL;
-	}
-   return start;
 }
 ```
-## aur ae wala 5th hai maze kr
-```c
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
-#define MAX 5
-int s[MAX],top=-1;
-void push(int s[],int val);
-int pop(int s[]);
-int peek(int s[]);
-void display(int s[]);
-int main()
-{
-   int val,option;
-   do
-   {
-     printf("\n****** MAIN MENU********");
-     printf("\n 1: PUSH");
-     printf("\n 2: POP");
-     printf("\n 3: PEEK");
-     printf("\n 4: DISPLAY");
-     printf("\n 5: EXIT");
-     printf("\n Enter Your option :");
-     scanf("%d",&option);
-     switch(option)
-     {
-	case 1: printf("\n Enter the Number to be pushed on stack");
-		scanf("%d",&val);
-		push(s,val);
-		break;
-	case 2:
-		val=pop(s);
-		if(val !=-1)
-		printf("\n The value deleted from stack is : %d",val);
-		break;
-	case 3:
-		val=peek(s);
-		if(val !=-1)
-		printf("\n The value stored at top of stack is : %d",val);
-		break;
-	case 4: display(s);
-		break;
-      }
-  }while(option != 5);
-  return 0;
-}
-void push (int s[],int val)
-{
-  if(top==MAX-1)
-  {
-     printf("\n STACK OVERFLOW");
-  }
-  else
-  {
-    top++;
-    s[top]=val;
-  }
-}
-int pop(int s[])
-{
-   int val;
-   if(top == -1)
-   {
-     printf("\n STACK UNDERFLOW");
-     return -1;
-   }
-   else
-   {
-      val=s[top];
-      top--;
-      return val;
-   }
-}
-int peek(int s[])
-{
-
-   if(top == -1)
-   {
-     printf("\n STACK UNDERFLOW");
-     return -1;
-   }
-   else
-      return (s[top]);
-}
-void display(int s[])
-{
-  int i;
-  if(top == -1)
-   {
-     printf("\n STACK EMPTY");
-   }
-   else
-   {
-      for(i=top;i>=0;i--)
-	printf("\n %d\n",s[i]);
-   }
-}
-```
-## ae pehla wala labset hai C ka
-```c
-#include <stdio.h>
-#include <conio.h>
- typedef struct distance 
- { 
-     int kms; 
-     int metres; 
- }   DISTANCE; 
-     DISTANCE add_distance (DISTANCE, DISTANCE); 
-     DISTANCE subtract_distance(DISTANCE,DISTANCE); 
-     DISTANCE dl, d2, d3, d4; 
- int main() 
- { 
-       int option; 
-       clrscr (); 
-    do 
-    { 
-        printf("\n ***MAIN MENU***"); 
-        printf ("\n 1. Read the distances "); 
-        printf ("\n 2. Display the distances"); 
-        printf ("\n 3. Add the distances "); 
-        printf ("\n 4. Subtract the distances"); 
-        printf ("\n 5. EXIT"); 
-        printf ("\n Enter your option: "); 
-        scanf("%d", &option); 
-     switch(option) 
-     { 
-      case 1: 
-             printf("\n Enter the first distance in kms and metres: "); 
-             scanf ("%d %d", &dl .kms, &dl .metres); 
-             printf("\n Enter the second distancekms and metres: "); 
-             scanf ("%d %d" , &d2 .kms, &d2 .metres); 
-       break; 
-      case 2: 
-             printf("\n The first distance is: %d kms %d metres " , dl.kms, dl.metres); 
-             printf("\n The second distance is: %d kms %d metres " , d2 .kms, d2 .metres); 
-       break; 
-      case 3: 
-             d3 = add_distance(dl, d2); 
-             printf("\n The sum of two distances is: %d kms %d metres", d3.kms, d3.metres); 
-       break; 
-      case 4: 
-             d4 = subtract_distance(dl, d2); 
-             printf("\n The difference between two distances is: %d kms %d metres ", d4.kms, d4 .metres); 
-       break; 
-     } 
-    } 
-     while(option != 5); 
-     { 
-       getch (); 
-       return 0; 
-     } 
- } 
-  DISTANCE add_distance(DISTANCE dl, DISTANCE d2) 
-  { 
-     DISTANCE sum; 
-     sum.metres = dl.metres + d2. metres; 
-     sum.kms = dl.kms + d2.kms; 
-       if(sum.metres >= 1000) 
-       { 
-                         sum.metres = sum.metres%1000; 
-                         sum.kms += 1; 
-       } 
-                    return sum; 
-  } 
-  DISTANCE subtract_distance(DISTANCE dl,DISTANCE d2) 
-  { 
-     DISTANCE sub; 
-       if(dl.kms > d2.kms) 
-       { 
-                         sub.metres = dl.metres - d2. metres; 
-                         sub.kms = dl.kms - d2.kms; 
-       } 
-        else 
-        { 
-                    sub.metres = d2.metres - dl. metres; 
-                    sub.kms = d2.kms - dl.kms; 
-        } 
-      if(sub.metres < 0) 
-      { 
-                    sub.kms = sub.kms - 1; 
-                    sub.metres = sub.metres + 1000; 
-      } 
-                   return sub; 
-  }
-```
-## ae java 5th wala hai
+## 8th labset java
 ```java
-class MyTime {
- private int hour;
- private int minute;
- MyTime(int hour, int minute) {
- setTime(hour, minute);
- }
- public void setTime(int hour, int minute) {
- if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
- this.hour = hour;
- this.minute = minute;
- } else {
- System.out.println("Invalid time. Hour should be between 0 and 23, and minute between 0 and 59.");
- }
- }
- public int getHour() {
- return hour;
- }
- public int getMinute() {
- return minute;
- }
- public MyTime nextMinute() {
- minute++;
- if (minute >= 60) {
- minute = 0;
- hour = (hour + 1) % 24;
- }
- return this;
- }
- public MyTime nextHour() {
- hour = (hour + 1) % 24;
- return this;
- }
-}
-class TestMyTime {
-public static void main(String[] args) {
- MyTime t = new MyTime(23, 59);
- System.out.println("Current Time: " + t.getHour() + ":" + t.getMinute());
- t.nextMinute();
- System.out.println("Next Minute: " + t.getHour() + ":" + t.getMinute());
- t.nextHour();
- System.out.println("Next Hour: " + t.getHour() + ":" + t.getMinute());
- }
-}
-```
-## 4th lab c
-```c
-#include<stdio.h>
-#include<stdlib.h>
-#include<conio.h>
-#include<malloc.h>
-#include<math.h>
-struct node
-{
-   int num;
-   int coeff;
-   struct node *next;
-};
-struct node *start1=NULL;
-struct node *start2=NULL;
-struct node *start3=NULL;
-struct node *start4=NULL;
-struct node *create_poly(struct node *);
-struct node *display_poly(struct node *);
-struct node *add_poly(struct node *,struct node *,struct node *);
-struct node *add_node(struct node *,int,int);
-void evaluate(struct node *);
-int main()
-{
-   int option;
-   clrscr();
-   do
-   {
-      printf("\n\n ******** MAIN MENU*******");
-      printf("\n 1: Enter the First Polynomial");
-      printf("\n 2: Display the First Polynomial");
-      printf("\n 3: Enter the Second Polynomial ");
-      printf("\n 4: Display the Second Polynomial");
-      printf("\n 5: Add the polnomials");
-      printf("\n 6:Display the Result");
-      printf("\n\n Enter your option:");
-      scanf("%d",&option);
-      switch(option)
-      {
-	 case 1: start1=create_poly(start1);
-		 break;
-	 case 2: start1=display_poly(start1);
-		 break;
-	 case 3: start2=create_poly(start2);
-		 break;
-	 case 4: start2=display_poly(start2);
-		 break;
-	 case 5: start3=add_poly(start1,start2,start3);
-		 break;
-	 case 6: start3=display_poly(start3);
-		 break;
-	 }
-   }while(option!=7);
-   getch();
-   return 0;
-}
-struct node *create_poly(struct node *start)
-{
-    struct node *new_node,*ptr;
-    int n,c;
-    printf("\n Enter the number:");
-    scanf("%d",&n);
-    printf("\t Enter its coefficient:");
-    scanf("%d",&c);
-    while(n !=-1)
-    {
+// Main class to test the interface and account implementations
+class TestAccountInterface {
+    public static void main(String[] args) {
+        // Test with HDFC Account
+        IAccount account = new HDFCAccount();
+        System.out.println("Transacting using HDFC Account");
+        transactOnAccount(account);
+        System.out.println();
 
-       if(start==NULL)
-       {
-	 new_node=(struct node*) malloc(sizeof(struct node));
-	 new_node->num=n;
-	 new_node->coeff=c;
-	 new_node->next=NULL;
-	 start=new_node;
-       }
-       else
-       {
-	  ptr=start;
-	  while(ptr->next !=NULL)
-	    ptr=ptr->next;
-	    new_node=(struct node*) malloc(sizeof(struct node));
-	    new_node->num=n;
-	    new_node->coeff=c;
-	    ptr->next=new_node;
-	    new_node->next=NULL;
-	}
-	printf("Enter the number :");
-	scanf("%d",&n);
-	if(n==-1)
-	 break;
-	printf("\t Enter its Coefficient");
-	scanf("%d",&c);
+        // Test with State Bank Account
+        account = new StateBankAccount();
+        System.out.println("Transacting using State Bank Account");
+        transactOnAccount(account);
     }
-    return start;
-}
-struct node *display_poly(struct node *start)
-{
-   struct node *ptr;
-   ptr=start;
-   while(ptr !=NULL)
-   {
-      printf("\n %d x %d\t",ptr->num,ptr->coeff);
-      ptr=ptr->next;
-   }
-   return start;
+
+    // Method to perform transactions on an account
+    public static void transactOnAccount(IAccount account) {
+        System.out.println();
+        account.deposit(1000.0);
+        printBalance("depositing 1,000.0", account);
+        account.withdraw(2500.0);
+        printBalance("withdrawing 2,500.0", account);
+        account.deposit(4100.0);
+        printBalance("depositing 4,100.0", account);
+        account.withdraw(5000.0);
+        printBalance("withdrawing 5,000.0", account);
+        System.out.println();
+    }
+
+    // Method to print the account balance
+    public static void printBalance(String message, IAccount account) {
+        System.out.println("The balance after " + message + " is " + account.getBalance() + ".");
+    }
 }
 
-struct node *add_poly(struct node *start1,struct node *start2,struct node *start3)
-{
-    struct node *ptr1,*ptr2;
-    int sum_num,c;
-    ptr1=start1,ptr2=start2;
-    while(ptr1 !=NULL && ptr2 !=NULL)
-    {
-       if(ptr1->coeff ==ptr2->coeff)
-	 {
-	   sum_num=ptr1->num+ptr2->num;
-	   start3=add_node(start3,sum_num,ptr1->coeff);
-	   ptr1=ptr1->next;
-	   ptr2=ptr2->next;
-	  }
-	else if (ptr1->coeff > ptr2->coeff)
-	  {
-	   start3=add_node(start3,ptr1->num,ptr1->coeff);
-	   ptr1=ptr1->next;
-	  }
-	else if (ptr1->coeff < ptr2->coeff)
-	{
-	   start3=add_node(start3,ptr2->num,ptr2->coeff);
-	   ptr2=ptr2->next;
-	}
-    }
-    if(ptr1 ==NULL)
-    {
-       while(ptr2!=NULL)
-	{
-	 start3=add_node(start3,ptr2->num,ptr2->coeff);
-	   ptr2=ptr2->next;
-	}
-    }
-    if(ptr2 ==NULL)
-    {
-       while(ptr1!=NULL)
-	{
-	 start3=add_node(start3,ptr1->num,ptr1->coeff);
-	   ptr1=ptr1->next;
-	}
-    }
-    return start3;
+// Account interface with basic operations
+interface IAccount {
+    double getBalance();
+
+    void deposit(double amount);
+
+    void withdraw(double amount);
 }
-struct node *add_node(struct node *start,int n,int c)
-{
-  struct node *ptr,*new_node;
-  if(start==NULL)
-       {
-	 new_node=(struct node*) malloc(sizeof(struct node));
-	 new_node->num=n;
-	 new_node->coeff=c;
-	 new_node->next=NULL;
-	 start=new_node;
-       }
-       else
-       {
-	  ptr=start;
-	  while(ptr->next !=NULL)
-	    ptr=ptr->next;
-	    new_node=(struct node*) malloc(sizeof(struct node));
-	    new_node->num=n;
-	    new_node->coeff=c;
-	    ptr->next=new_node;
-	    new_node->next=NULL;
-	}
-   return start;
+
+// Implementation of the HDFC account
+class HDFCAccount implements IAccount {
+    private double totalDeposits;
+    private double totalWithdrawals;
+
+    @Override
+    public double getBalance() {
+        return totalDeposits - totalWithdrawals;
+    }
+
+    @Override
+    public void deposit(double amount) {
+        if (amount > 0) {
+            totalDeposits += amount;
+        } else {
+            System.out.println("Invalid deposit amount. Please enter a positive value.");
+        }
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount > 0) {
+            totalWithdrawals += amount;
+        } else {
+            System.out.println("Invalid withdrawal amount. Please enter a positive value.");
+        }
+    }
+}
+
+// Implementation of the State Bank account
+class StateBankAccount implements IAccount {
+    private double balance;
+
+    @Override
+    public double getBalance() {
+        return balance;
+    }
+
+    @Override
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        } else {
+            System.out.println("Invalid deposit amount. Please enter a positive value.");
+        }
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount > 0) {
+            balance -= amount;
+        } else {
+            System.out.println("Invalid withdrawal amount. Please enter a positive value.");
+        }
+    }
 }
 ```
-# Labset 6 DS
-```c
-#include<stdio.h>
-#include<conio.h>
-#include<string.h>
-#include<ctype.h>
-#include<stdlib.h>
-#define MAX 20
-void InfixtoPostfix(char source[],char target[]);
-int getpriority(char);
-void push(char [],char);
-char pop(char []);
-char st[MAX];
-int top=-1;
-int main()
-{
-    char infix[20],postfix[20];
-    clrscr();
-    printf("\n Enter any infix expression");
-    gets(infix);
-    InfixtoPostfix(infix,postfix);
-    printf("\n The Corresponding postfix expression is :");
-    puts(postfix);
-    getch();
-    return 0;
+## 9th labset java package program
+```java
+cie package> student class>
+// File: CIE/Student.java
+package CIE;
+
+public class Student {
+    public String usn;
+    public String name;
+    public int sem;
 }
-void InfixtoPostfix(char source[],char target[])
-{
-   int i=0,j=0;
-   char temp;
-   strcpy(target," ");
-   while(source[i] !='\0')
-   {
-      if(source[i]=='(')
-       {
-	  push(st,source[i]);
-	  i++;
-       }
-       else if(source[i] ==')')
-	 {
-	    while((top !=-1) && (st[top] !='('))
-	      {
-		 target[j]=pop(st);
-		 j++;
-	       }
-	       if(top==-1)
-	       {
-		 printf("\n Incorrect Expression");
-		 exit(1);
-	       }
-	       temp=pop(st);
-	       i++;
-	 }
-	 else if(isdigit(source[i]) || isalpha(source[i]))
-	   {
-	      target[j]=source[i];
-	      j++;
-	      i++;
-	    }
-	 else if(source[i] =='+' || source[i]=='-' || source[i]=='*' || source[i]=='/'|| source[i]=='%')
-	    {
-	       while((top !=-1) && (st[top]!='(') && getpriority(st[top]) >= getpriority(source[i]))
-		 {
-		    target[j]=pop(st);
-		    j++;
-		  }
-		  push(st,source[i]);
-		  i++;
-	    }
-	    else
-	    {
-	      printf("\n Incorrect Expression");
-		 exit(1);
-	     }
-      }
-      while((top !=-1) && (st[top] !='('))
-      {
-	target[j]=pop(st);
-	j++;
-      }
-      target[j]='\0';
+
+cie>internals class>// File: CIE/Internals.java
+package CIE;
+
+public class Internals extends Student {
+    public int[] internalMarks = new int[6];
+
+    public Internals(String usn, String name, int sem, int[] internalMarks) {
+        this.usn = usn;
+        this.name = name;
+        this.sem = sem;
+        this.internalMarks = internalMarks;
+    }
 }
-int getpriority(char op)
-{
-    if(op=='/' || op=='*' || op=='%')
-      return 1;
-    else if(op=='+' || op=='-')
-       return 0;
+
+
+see packaage>external class > // File: SEE/External.java
+package SEE;
+
+import CIE.Student;
+
+public class External extends Student {
+    public int[] seeMarks = new int[6];
+
+    public External(String usn, String name, int sem, int[] seeMarks) {
+        this.usn = usn;
+        this.name = name;
+        this.sem = sem;
+        this.seeMarks = seeMarks;
+    }
 }
-void push(char st[],char val)
-{
-   if(top==MAX-1)
-      printf("\n Stack Overflow");
-   else
-    {
-      top++;
-      st[top]=val;
-     }
-}
-char pop(char st[])
-{
-   char val=' ';
-   if(top==-1)
-     printf("\n Stak Underflow");
-   else
-     {
-       val=st[top];
-       top--;
-      }
-    return val;
+
+
+main.java>
+// File: Main.java
+import CIE.Internals;
+import SEE.External;
+
+public class Main {
+    public static void main(String[] args) {
+        int N = 5; // Example number of students
+        Internals[] internalStudents = new Internals[N];
+        External[] externalStudents = new External[N];
+        
+        // Example data
+        for (int i = 0; i < N; i++) {
+            internalStudents[i] = new Internals("USN" + (i + 1), "Student" + (i + 1), 3, new int[]{80, 85, 75, 90, 88, 92});
+            externalStudents[i] = new External("USN" + (i + 1), "Student" + (i + 1), 3, new int[]{70, 75, 65, 80, 78, 82});
+        }
+        
+        for (int i = 0; i < N; i++) {
+            System.out.println("Student: " + internalStudents[i].name);
+            System.out.println("USN: " + internalStudents[i].usn);
+            System.out.println("Semester: " + internalStudents[i].sem);
+            
+            int totalMarks = 0;
+            for (int j = 0; j < 6; j++) {
+                int finalMarks = internalStudents[i].internalMarks[j] + externalStudents[i].seeMarks[j];
+                totalMarks += finalMarks;
+                System.out.println("Course " + (j + 1) + " Final Marks: " + finalMarks);
+            }
+            System.out.println("Total Marks: " + totalMarks + "\n");
+        }
+    }
 }
 ```
