@@ -786,3 +786,329 @@ char pop(char st[])
       }
     return val;
 }
+## Java lab 6
+```java
+import java.util.*;
+
+class Account {
+    public String acc_name;
+    public double acc_no;
+    public int acc_type;
+    public double balance;
+
+    public void getdata(String name, double no, int type, double bal) {
+        acc_name = name;
+        acc_no = no;
+        acc_type = type;
+        balance = bal;
+    }
+}
+
+class Savings extends Account {
+    public void deposit(double amt) {
+        balance = balance + amt;
+        System.out.println(balance);
+    }
+
+    public void withdraw(double amt) {
+        balance = balance - amt;
+        System.out.println(balance);
+    }
+
+    public void interest(int time, int no) {
+        double intr = balance * (1 + 6.0 / 100);
+        intr = Math.pow(intr, (time * no));
+        System.out.println("Interest calculated is: " + intr);
+        balance = balance + intr;
+        System.out.println("The new balance is: " + balance);
+    }
+}
+
+class Current extends Account {
+    public void deposit(double amt) {
+        balance = balance + amt;
+        System.out.println(balance);
+    }
+
+    public void withdraw(double amt) {
+        balance = balance - amt;
+        System.out.println(balance);
+        check(balance);
+    }
+
+    public void check(double amt) {
+        if (amt < 10000) {
+            balance = balance - 500;
+            System.out.println("Insufficient Balance, penalty applied. New balance: " + balance);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int temp = 1;
+        while (temp == 1) {
+            System.out.println("Enter name: ");
+            String name = sc.nextLine();
+            System.out.println("Enter acc_no: ");
+            double no = sc.nextDouble();
+            System.out.println("Enter acc type (0 for Savings, 1 for Current): ");
+            int type = sc.nextInt();
+            double amt = 0;
+            do {
+                System.out.println("Enter balance: ");
+                amt = sc.nextDouble();
+            } while (type == 1 && amt < 10000);
+
+            if (type == 0) {
+                Savings s = new Savings();
+                s.getdata(name, no, type, amt);
+
+                System.out.println("\n1. Deposit\n2. Withdraw\n3. Interest");
+                int temp3 = sc.nextInt();
+
+                if (temp3 == 1) {
+                    System.out.println("Enter Amount: ");
+                    double amt1 = sc.nextDouble();
+                    s.deposit(amt1);
+                } else if (temp3 == 2) {
+                    System.out.println("Enter Amount: ");
+                    double amt1 = sc.nextDouble();
+                    s.withdraw(amt1);
+                } else if (temp3 == 3) {
+                    System.out.println("Enter time period: ");
+                    int tp = sc.nextInt();
+                    System.out.println("Enter number of times: ");
+                    int nof = sc.nextInt();
+                    s.interest(tp, nof);
+                }
+            } else if (type == 1) {
+                Current c = new Current();
+                c.getdata(name, no, type, amt);
+
+                System.out.println("\n1. Deposit\n2. Withdraw");
+                int temp3 = sc.nextInt();
+
+                if (temp3 == 1) {
+                    System.out.println("Enter Amount: ");
+                    double amt1 = sc.nextDouble();
+                    c.deposit(amt1);
+                } else if (temp3 == 2) {
+                    System.out.println("Enter Amount: ");
+                    double amt1 = sc.nextDouble();
+                    c.withdraw(amt1);
+                }
+            }
+
+            System.out.println("To continue enter 1, else 0");
+            temp = sc.nextInt();
+        }
+        sc.close();
+    }
+}
+```
+## java lab 1
+```java
+import java.util.Scanner;
+
+public class SeriesSum {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the value of n: ");
+        int n = sc.nextInt();
+        double sum = 0.0;
+
+        for (int i = 1; i <= n; i++) {
+            sum += 1.0 / (i * i);
+        }
+
+        System.out.println("The sum of the series is: " + sum);
+    }
+}
+```
+## java lab 2
+```java
+public class PascalsTriangle {
+    public static void main(String[] args) {
+        int rows = 5;
+
+        for (int i = 0; i < rows; i++) {
+            // Print spaces for alignment
+            for (int j = 0; j < rows - i; j++) {
+                System.out.print(" ");
+            }
+
+            int number = 1;
+            for (int j = 0; j <= i; j++) {
+                System.out.print(number + " ");
+                number = number * (i - j) / (j + 1); // Compute the next number
+            }
+            System.out.println();
+        }
+    }
+}
+```
+## java lab 4
+```java
+class Complex {
+    private double real;
+    private double imaginary;
+
+    // Parameterized Constructor
+    public Complex(double real, double imaginary) {
+        this.real = real;
+        this.imaginary = imaginary;
+    }
+
+    // Method to add two complex numbers
+    public Complex add(Complex other) {
+        double newReal = this.real + other.real;
+        double newImaginary = this.imaginary + other.imaginary;
+        return new Complex(newReal, newImaginary);
+    }
+
+    // Method to subtract two complex numbers
+    public Complex subtract(Complex other) {
+        double newReal = this.real - other.real;
+        double newImaginary = this.imaginary - other.imaginary;
+        return new Complex(newReal, newImaginary);
+    }
+
+    // Method to display the complex number
+    public void display() {
+        System.out.println(this.real + " + " + this.imaginary + "i");
+    }
+}
+
+public class ComplexNumberDemo {
+    public static void main(String[] args) {
+        // Create two complex numbers using the parameterized constructor
+        Complex c1 = new Complex(5.0, 3.0);
+        Complex c2 = new Complex(2.0, 1.0);
+
+        // Perform addition
+        Complex sum = c1.add(c2);
+        System.out.print("Sum: ");
+        sum.display();
+
+        // Perform subtraction
+        Complex difference = c1.subtract(c2);
+        System.out.print("Difference: ");
+        difference.display();
+    }
+}
+```
+## java lab 3
+```java
+import java.util.Scanner;
+
+public class NumberOrder {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the first number: ");
+        int num1 = sc.nextInt();
+        System.out.print("Enter the second number: ");
+        int num2 = sc.nextInt();
+        System.out.print("Enter the third number: ");
+        int num3 = sc.nextInt();
+
+        if (num1 < num2 && num2 < num3) {
+            System.out.println("Increasing");
+        } else if (num1 > num2 && num2 > num3) {
+            System.out.println("Decreasing");
+        } else {
+            System.out.println("Neither increasing nor decreasing order");
+        }
+    }
+}
+```
+## java lab 5
+```java
+class MyTime {
+    private int hour;   // between 0 and 23
+    private int minute; // between 0 and 59
+
+    // Constructor
+    public MyTime(int hour, int minute) {
+        setTime(hour, minute);
+    }
+
+    // Method to set time with validation
+    public void setTime(int hour, int minute) {
+        if (hour >= 0 && hour < 24 && minute >= 0 && minute < 60) {
+            this.hour = hour;
+            this.minute = minute;
+        } else {
+            throw new IllegalArgumentException("Invalid time: hour must be 0-23 and minute must be 0-59.");
+        }
+    }
+
+    // Getters
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    // Move to the next minute
+    public MyTime nextMinute() {
+        minute++;
+        if (minute == 60) { // if minute reaches 60, reset to 0 and increment hour
+            minute = 0;
+            hour++;
+            if (hour == 24) { // if hour reaches 24, reset to 0
+                hour = 0;
+            }
+        }
+        return this; // Return the updated instance
+    }
+
+    // Move to the next hour
+    public MyTime nextHour() {
+        hour++;
+        if (hour == 24) { // if hour reaches 24, reset to 0
+            hour = 0;
+        }
+        return this; // Return the updated instance
+    }
+
+    // Display time in HH:MM format
+    @Override
+    public String toString() {
+        return String.format("%02d:%02d", hour, minute);
+    }
+}
+public class TestMyTime {
+    public static void main(String[] args) {
+        // Create a MyTime instance
+        MyTime time = new MyTime(23, 59);
+
+        // Display the current time
+        System.out.println("Initial time: " + time);
+
+        // Test nextMinute()
+        time.nextMinute();
+        System.out.println("After nextMinute(): " + time);
+
+        // Test nextHour()
+        time.nextHour();
+        System.out.println("After nextHour(): " + time);
+
+        // Set a valid time
+        time.setTime(12, 30);
+        System.out.println("After setting time to 12:30: " + time);
+
+        // Test getters
+        System.out.println("Hour: " + time.getHour());
+        System.out.println("Minute: " + time.getMinute());
+
+        // Test invalid time (uncomment to see exception)
+        // time.setTime(25, 61);
+    }
+}
+```
+
+
