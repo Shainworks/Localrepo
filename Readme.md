@@ -1339,7 +1339,8 @@ freenode(cur);
 }
 ```
 ## Ds lab 7
-```c#include <stdio.h>
+```c
+#include <stdio.h>
 #include <conio.h>
 
 // Function for Tower of Hanoi
