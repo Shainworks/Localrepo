@@ -1339,8 +1339,8 @@ freenode(cur);
 }
 ```
 ## Ds lab 7
-```c
-#include <stdio.h>
+```c#include <stdio.h>
+#include <conio.h>
 
 // Function for Tower of Hanoi
 void towerOfHanoi(int n, char source, char destination, char auxiliary) {
@@ -1363,10 +1363,11 @@ int findGCD(int a, int b) {
 
 // Function to find the largest of n numbers
 int findLargest(int arr[], int n) {
+    int maxOfRest; // Declare variable at the top to follow C89 standard
     if (n == 1) {
         return arr[0];
     }
-    int maxOfRest = findLargest(arr, n - 1);
+    maxOfRest = findLargest(arr, n - 1); // Assign the value here
     if (arr[n - 1] > maxOfRest) {
         return arr[n - 1];
     } else {
@@ -1376,6 +1377,11 @@ int findLargest(int arr[], int n) {
 
 int main() {
     int choice;
+    int n, i, a, b, gcd, largest;
+    int arr[100]; // Fixed-size array since Turbo C++ doesn't support variable-length arrays
+
+    clrscr(); // Clear the screen for Turbo C++
+
     printf("Select an operation:\n");
     printf("1. Tower of Hanoi\n");
     printf("2. GCD of two numbers\n");
@@ -1385,7 +1391,6 @@ int main() {
 
     switch (choice) {
         case 1: {
-            int n;
             printf("Enter the number of disks: ");
             scanf("%d", &n);
             printf("Steps to solve Tower of Hanoi:\n");
@@ -1393,23 +1398,21 @@ int main() {
             break;
         }
         case 2: {
-            int a, b;
             printf("Enter two numbers to find GCD: ");
             scanf("%d %d", &a, &b);
-            int gcd = findGCD(a, b);
+            gcd = findGCD(a, b);
             printf("The GCD of %d and %d is: %d\n", a, b, gcd);
             break;
         }
         case 3: {
-            int n;
             printf("Enter the number of elements: ");
             scanf("%d", &n);
-            int arr[n];
+
             printf("Enter the elements:\n");
-            for (int i = 0; i < n; i++) {
+            for (i = 0; i < n; i++) {
                 scanf("%d", &arr[i]);
             }
-            int largest = findLargest(arr, n);
+            largest = findLargest(arr, n);
             printf("The largest number is: %d\n", largest);
             break;
         }
@@ -1417,8 +1420,11 @@ int main() {
             printf("Invalid choice! Please select 1, 2, or 3.\n");
     }
 
+    printf("\nPress any key to exit...");
+    getch(); // Wait for key press
     return 0;
 }
+
 ```
 
 
