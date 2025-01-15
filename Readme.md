@@ -1645,6 +1645,87 @@ freenode(cur);
    return root;
 }
 ```
+## Ds lab 7
+```c
+#include <stdio.h>
 
+// Function for Tower of Hanoi
+void towerOfHanoi(int n, char source, char destination, char auxiliary) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", source, destination);
+        return;
+    }
+    towerOfHanoi(n - 1, source, auxiliary, destination);
+    printf("Move disk %d from %c to %c\n", n, source, destination);
+    towerOfHanoi(n - 1, auxiliary, destination, source);
+}
+
+// Function to find GCD of two numbers
+int findGCD(int a, int b) {
+    if (b == 0) {
+        return a;
+    }
+    return findGCD(b, a % b);
+}
+
+// Function to find the largest of n numbers
+int findLargest(int arr[], int n) {
+    if (n == 1) {
+        return arr[0];
+    }
+    int maxOfRest = findLargest(arr, n - 1);
+    if (arr[n - 1] > maxOfRest) {
+        return arr[n - 1];
+    } else {
+        return maxOfRest;
+    }
+}
+
+int main() {
+    int choice;
+    printf("Select an operation:\n");
+    printf("1. Tower of Hanoi\n");
+    printf("2. GCD of two numbers\n");
+    printf("3. Largest of 'n' numbers\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1: {
+            int n;
+            printf("Enter the number of disks: ");
+            scanf("%d", &n);
+            printf("Steps to solve Tower of Hanoi:\n");
+            towerOfHanoi(n, 'A', 'C', 'B');
+            break;
+        }
+        case 2: {
+            int a, b;
+            printf("Enter two numbers to find GCD: ");
+            scanf("%d %d", &a, &b);
+            int gcd = findGCD(a, b);
+            printf("The GCD of %d and %d is: %d\n", a, b, gcd);
+            break;
+        }
+        case 3: {
+            int n;
+            printf("Enter the number of elements: ");
+            scanf("%d", &n);
+            int arr[n];
+            printf("Enter the elements:\n");
+            for (int i = 0; i < n; i++) {
+                scanf("%d", &arr[i]);
+            }
+            int largest = findLargest(arr, n);
+            printf("The largest number is: %d\n", largest);
+            break;
+        }
+        default:
+            printf("Invalid choice! Please select 1, 2, or 3.\n");
+    }
+
+    return 0;
+}
+```
 
 
