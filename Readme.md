@@ -300,106 +300,88 @@ public class Main {
 ```
 ## 8th labset java
 ```java
-// Main class to test the interface and account implementations
-class TestAccountInterface {
-    public static void main(String[] args) {
-        // Test with HDFC Account
-        IAccount account = new HDFCAccount();
-        System.out.println("Transacting using HDFC Account");
-        transactOnAccount(account);
-        System.out.println();
-
-        // Test with State Bank Account
-        account = new StateBankAccount();
-        System.out.println("Transacting using State Bank Account");
-        transactOnAccount(account);
-    }
-
-    // Method to perform transactions on an account
-    public static void transactOnAccount(IAccount account) {
-        System.out.println();
-        account.deposit(1000.0);
-        printBalance("depositing 1,000.0", account);
-        account.withdraw(2500.0);
-        printBalance("withdrawing 2,500.0", account);
-        account.deposit(4100.0);
-        printBalance("depositing 4,100.0", account);
-        account.withdraw(5000.0);
-        printBalance("withdrawing 5,000.0", account);
-        System.out.println();
-    }
-
-    // Method to print the account balance
-    public static void printBalance(String message, IAccount account) {
-        System.out.println("The balance after " + message + " is " + account.getBalance() + ".");
-    }
+// Account interface
+interface Account {
+    void deposit(double amount);  // Method to deposit money
+    void withdraw(double amount); // Method to withdraw money
+    double getBalance();          // Method to get balance
 }
 
-// Account interface with basic operations
-interface IAccount {
-    double getBalance();
-
-    void deposit(double amount);
-
-    void withdraw(double amount);
-}
-
-// Implementation of the HDFC account
-class HDFCAccount implements IAccount {
-    private double totalDeposits;
-    private double totalWithdrawals;
-
-    @Override
-    public double getBalance() {
-        return totalDeposits - totalWithdrawals;
-    }
+// HDFC Account class
+class HDFCAccount implements Account {
+    private double deposits = 0.0;
+    private double withdrawals = 0.0;
 
     @Override
     public void deposit(double amount) {
-        if (amount > 0) {
-            totalDeposits += amount;
-        } else {
-            System.out.println("Invalid deposit amount. Please enter a positive value.");
-        }
+            deposits += amount;
     }
 
     @Override
     public void withdraw(double amount) {
-        if (amount > 0) {
-            totalWithdrawals += amount;
+        if (amount<=getBalance()) {
+            withdrawals += amount;
         } else {
-            System.out.println("Invalid withdrawal amount. Please enter a positive value.");
+            System.out.println("Insufficient balance or invalid withdrawal amount!");
         }
+    }
+
+    @Override
+    public double getBalance() {
+        return deposits - withdrawals;
     }
 }
 
-// Implementation of the State Bank account
-class StateBankAccount implements IAccount {
-    private double balance;
+// State Bank Account class
+class StateBankAccount implements Account {
+    private double balance = 0.0;
+
+    @Override
+    public void deposit(double amount) {
+            balance += amount;
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+        } else {
+            System.out.println("Insufficient balance or invalid withdrawal amount!");
+        }
+    }
 
     @Override
     public double getBalance() {
         return balance;
     }
+}
 
-    @Override
-    public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-        } else {
-            System.out.println("Invalid deposit amount. Please enter a positive value.");
-        }
+// Main class
+public class Main {
+    // Method to print the balance of an account
+    public static void printBalance(Account account) {
+        System.out.println("Current Balance: " + account.getBalance());
     }
 
-    @Override
-    public void withdraw(double amount) {
-        if (amount > 0) {
-            balance -= amount;
-        } else {
-            System.out.println("Invalid withdrawal amount. Please enter a positive value.");
-        }
+    public static void main(String[] args) {
+        // Creating objects of HDFCAccount and StateBankAccount
+        Account hdfc = new HDFCAccount();
+        Account sbi = new StateBankAccount();
+
+        // Performing operations on HDFC Account
+        System.out.println("HDFC Account:");
+        hdfc.deposit(5000);
+        hdfc.withdraw(2000);
+        printBalance(hdfc); // Prints balance of HDFC Account
+
+        // Performing operations on State Bank Account
+        System.out.println("\nState Bank Account:");
+        sbi.deposit(8000);
+        sbi.withdraw(3000);
+        printBalance(sbi); // Prints balance of State Bank Account
     }
 }
+
 ```
 ## 9th labset java package program
 ```java
