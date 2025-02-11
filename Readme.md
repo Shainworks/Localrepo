@@ -1,3 +1,734 @@
+## Ds lab 1
+```c
+#include <stdio.h>
+#include <conio.h>
+
+typedef struct distance {
+    int kms;
+    int metres;
+} DISTANCE;
+
+DISTANCE add_distance(DISTANCE d1, DISTANCE d2);
+DISTANCE subtract_distance(DISTANCE d1, DISTANCE d2);
+
+int main() {
+    DISTANCE d1, d2, d3, d4;
+    int option;
+
+    clrscr();
+
+    do {
+        printf("\n ***MAIN MENU***");
+        printf("\n 1. Read the distances");
+        printf("\n 2. Display the distances");
+        printf("\n 3. Add the distances");
+        printf("\n 4. Subtract the distances");
+        printf("\n 5. EXIT");
+        printf("\n Enter your option: ");
+        scanf("%d", &option);
+
+        switch (option) {
+        case 1:
+            printf("\n Enter the first distance in kms and metres: ");
+            scanf("%d %d", &d1.kms, &d1.metres);
+            printf("\n Enter the second distance in kms and metres: ");
+            scanf("%d %d", &d2.kms, &d2.metres);
+            break;
+        case 2:
+            printf("\n The first distance is: %d kms %d metres", d1.kms, d1.metres);
+            printf("\n The second distance is: %d kms %d metres", d2.kms, d2.metres);
+            break;
+        case 3:
+            d3 = add_distance(d1, d2);
+            printf("\n The sum of two distances is: %d kms %d metres", d3.kms, d3.metres);
+            break;
+        case 4:
+            d4 = subtract_distance(d1, d2);
+            printf("\n The difference between two distances is: %d kms %d metres", d4.kms, d4.metres);
+            break;
+        case 5:
+            printf("\n Exiting the program.");
+            break;
+        default:
+            printf("\n Invalid option! Please try again.");
+        }
+    } while (option != 5);
+
+    getch();
+    return 0;
+}
+
+DISTANCE add_distance(DISTANCE d1, DISTANCE d2) {
+    DISTANCE sum;
+    sum.metres = d1.metres + d2.metres;
+    sum.kms = d1.kms + d2.kms;
+
+    if (sum.metres >= 1000) {
+        sum.metres -= 1000;
+        sum.kms += 1;
+    }
+
+    return sum;
+}
+
+DISTANCE subtract_distance(DISTANCE d1, DISTANCE d2) {
+    DISTANCE sub;
+
+    // Adjust distances for proper subtraction
+    if (d1.metres < d2.metres) {
+        d1.metres += 1000;
+        d1.kms -= 1;
+    }
+
+    sub.metres = d1.metres - d2.metres;
+    sub.kms = d1.kms - d2.kms;
+
+    return sub;
+}
+```
+## Ds lab 2
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <malloc.h>
+
+struct node {
+   int data;
+   struct node *next;
+};
+
+struct node *start = NULL;
+struct node *create_ll(struct node *);
+struct node *display(struct node *);
+struct node *insert_beg(struct node *);
+struct node *insert_end(struct node *);
+struct node *delete_node(struct node *);
+
+int main() {
+   int option;
+   do {
+      printf("\n\n ******** MAIN MENU *******");
+      printf("\n 1: Create a list");
+      printf("\n 2: Display the list");
+      printf("\n 3: Insert beginning");
+      printf("\n 4: Insert end");
+      printf("\n 5: Delete a specified node");
+      printf("\n 6: Exit");
+      printf("\n\n Enter your option: ");
+      scanf("%d", &option);
+      switch(option) {
+         case 1: 
+            start = create_ll(start);
+            printf("\nLinked list created");
+            break;
+         case 2: 
+            start = display(start);
+            break;
+         case 3: 
+            start = insert_beg(start);
+            break;
+         case 4: 
+            start = insert_end(start);
+            break;
+         case 5: 
+            start = delete_node(start);
+            break;
+         case 6: 
+            exit(0);
+            break;
+         default:
+            printf("\nInvalid option");
+            break;
+      }
+   } while(option != 6);
+   getch();
+   return 0;
+}
+
+struct node *create_ll(struct node *start) {
+    struct node *new_node, *ptr;
+    int num;
+    printf("\n Enter -1 to end");
+    printf("\n Enter the data: ");
+    scanf("%d", &num);
+    while(num != -1) {
+       new_node = (struct node*) malloc(sizeof(struct node));
+       new_node->data = num;
+       if(start == NULL) {
+          new_node->next = NULL;
+          start = new_node;
+       } else {
+          ptr = start;
+          while(ptr->next != NULL)
+             ptr = ptr->next;
+          ptr->next = new_node;
+          new_node->next = NULL;
+       }
+       printf("Enter the data: ");
+       scanf("%d", &num);
+    }
+    return start;
+}
+
+struct node *display(struct node *start) {
+   struct node *ptr;
+   ptr = start;
+   if(ptr == NULL) {
+      printf("\nList is empty");
+      return start;
+   }
+   while(ptr != NULL) {
+      printf("\t %d", ptr->data);
+      ptr = ptr->next;
+   }
+   return start;
+}
+
+struct node *insert_beg(struct node *start) {
+    struct node *new_node;
+    int num;
+    printf("\n Enter the data: ");
+    scanf("%d", &num);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = num;
+    new_node->next = start;
+    start = new_node;
+    return start;
+}
+
+struct node *insert_end(struct node *start) {
+    struct node *ptr, *new_node;
+    int num;
+    printf("\n Enter the data: ");
+    scanf("%d", &num);
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = num;
+    new_node->next = NULL;
+    ptr = start;
+    if(ptr != NULL) {
+        while(ptr->next != NULL)
+            ptr = ptr->next;
+        ptr->next = new_node;
+    } else {
+        start = new_node;
+    }
+    return start;
+}
+
+struct node *delete_node(struct node *start) {
+    struct node *ptr, *preptr;
+    int val;
+    printf("\n Enter the value of the node which has to be deleted: ");
+    scanf("%d", &val);
+    ptr = start;
+    if(ptr->data == val) {
+       start = start->next;
+       free(ptr);
+       return start;
+    } else {
+      while(ptr->data != val) {
+         preptr = ptr;
+         ptr = ptr->next;
+      }
+      preptr->next = ptr->next;
+      free(ptr);
+      return start;
+    }
+}
+```
+## DS lab 3
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Structure for Book data
+struct node {
+    int book_id;
+    char book_title[100];
+    char author[100];
+    int edition;
+    struct node* next;
+    struct node* prev;
+};
+
+// Function prototypes
+struct node* create_dll(struct node* head);
+void display_dll(struct node* head);
+struct node* insert_front(struct node* head, int id, char title[], char author[], int edition);
+struct node* insert_rear(struct node* head, int id, char title[], char author[], int edition);
+struct node* delete_front(struct node* head);
+struct node* delete_rear(struct node* head);
+int count_nodes(struct node* head);
+
+int main() {
+    struct node* head = NULL;
+    int option, book_id, edition;
+    char title[100], author[100];
+
+    do {
+        printf("\n******** MAIN MENU *******");
+        printf("\n1: Create DLL of N Books");
+        printf("\n2: Display DLL");
+        printf("\n3: Insert Book at Front");
+        printf("\n4: Insert Book at Rear");
+        printf("\n5: Delete Book from Front");
+        printf("\n6: Delete Book from Rear");
+        printf("\n7: Count the number of Books");
+        printf("\n8: Exit");
+        printf("\n\nEnter your option: ");
+        scanf("%d", &option);
+
+        switch (option) {
+            case 1:
+                head = create_dll(head);
+                break;
+            case 2:
+                display_dll(head);
+                break;
+            case 3:
+                printf("\nEnter Book ID, Title, Author, Edition: ");
+                scanf("%d", &book_id);
+                getchar(); // Consume newline
+                fgets(title, sizeof(title), stdin);
+                title[strcspn(title, "\n")] = 0; // Remove newline
+                fgets(author, sizeof(author), stdin);
+                author[strcspn(author, "\n")] = 0; // Remove newline
+                scanf("%d", &edition);
+                head = insert_front(head, book_id, title, author, edition);
+                break;
+            case 4:
+                printf("\nEnter Book ID, Title, Author, Edition: ");
+                scanf("%d", &book_id);
+                getchar(); // Consume newline
+                fgets(title, sizeof(title), stdin);
+                title[strcspn(title, "\n")] = 0; // Remove newline
+                fgets(author, sizeof(author), stdin);
+                author[strcspn(author, "\n")] = 0; // Remove newline
+                scanf("%d", &edition);
+                head = insert_rear(head, book_id, title, author, edition);
+                break;
+            case 5:
+                head = delete_front(head);
+                break;
+            case 6:
+                head = delete_rear(head);
+                break;
+            case 7:
+                printf("\nTotal number of books in DLL: %d\n", count_nodes(head));
+                break;
+            case 8:
+                printf("\nExiting the program.\n");
+                break;
+            default:
+                printf("\nInvalid option. Please try again.\n");
+        }
+    } while (option != 8);
+
+    return 0;
+}
+
+// Create DLL with N books
+struct node* create_dll(struct node* head) {
+    int n, id, edition;
+    char title[100], author[100];
+    struct node* new_node;
+
+    printf("\nEnter the number of books: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        printf("\nEnter Book ID, Title, Author, Edition: ");
+        scanf("%d", &id);
+        getchar(); // Consume newline
+        fgets(title, sizeof(title), stdin);
+        title[strcspn(title, "\n")] = 0; // Remove newline
+        fgets(author, sizeof(author), stdin);
+        author[strcspn(author, "\n")] = 0; // Remove newline
+        scanf("%d", &edition);
+
+        new_node = (struct node*)malloc(sizeof(struct node));
+        new_node->book_id = id;
+        strcpy(new_node->book_title, title);
+        strcpy(new_node->author, author);
+        new_node->edition = edition;
+        new_node->next = NULL;
+        new_node->prev = NULL;
+
+        if (head == NULL) {
+            head = new_node;
+        } else {
+            struct node* temp = head;
+            while (temp->next != NULL) {
+                temp = temp->next;
+            }
+            temp->next = new_node;
+            new_node->prev = temp;
+        }
+    }
+    return head;
+}
+
+// Display DLL
+void display_dll(struct node* head) {
+    if (head == NULL) {
+        printf("\nThe DLL is empty.\n");
+        return;
+    }
+
+    struct node* temp = head;
+    printf("\nBOOK ID | BOOK TITLE | AUTHOR | EDITION\n");
+    printf("-----------------------------------------\n");
+    while (temp != NULL) {
+        printf("%d | %s | %s | %d\n", temp->book_id, temp->book_title, temp->author, temp->edition);
+        temp = temp->next;
+    }
+}
+
+// Insert at front of DLL
+struct node* insert_front(struct node* head, int id, char title[], char author[], int edition) {
+    struct node* new_node = (struct node*)malloc(sizeof(struct node));
+    new_node->book_id = id;
+    strcpy(new_node->book_title, title);
+    strcpy(new_node->author, author);
+    new_node->edition = edition;
+    new_node->prev = NULL;
+    new_node->next = head;
+
+    if (head != NULL) {
+        head->prev = new_node;
+    }
+    head = new_node;
+    return head;
+}
+
+// Insert at rear of DLL
+struct node* insert_rear(struct node* head, int id, char title[], char author[], int edition) {
+    struct node* new_node = (struct node*)malloc(sizeof(struct node));
+    struct node* temp = head;
+
+    new_node->book_id = id;
+    strcpy(new_node->book_title, title);
+    strcpy(new_node->author, author);
+    new_node->edition = edition;
+    new_node->next = NULL;
+
+    if (head == NULL) {
+        new_node->prev = NULL;
+        head = new_node;
+    } else {
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = new_node;
+        new_node->prev = temp;
+    }
+    return head;
+}
+
+// Delete from front of DLL
+struct node* delete_front(struct node* head) {
+    if (head == NULL) {
+        printf("\nThe DLL is empty.\n");
+        return head;
+    }
+
+    struct node* temp = head;
+    head = head->next;
+    if (head != NULL) {
+        head->prev = NULL;
+    }
+    free(temp);
+    printf("\nBook removed from the front.\n");
+
+    return head;
+}
+
+// Delete from rear of DLL
+struct node* delete_rear(struct node* head) {
+    if (head == NULL) {
+        printf("\nThe DLL is empty.\n");
+        return head;
+    }
+
+    struct node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    if (temp->prev != NULL) {
+        temp->prev->next = NULL;
+    } else {
+        head = NULL;  // List has only one element
+    }
+    free(temp);
+    printf("\nBook removed from the rear.\n");
+
+    return head;
+}
+
+// Count the number of nodes in DLL
+int count_nodes(struct node* head) {
+    int count = 0;
+    struct node* temp = head;
+
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+```
+## Ds lab 4
+```c
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node {
+    int coeff;
+    int power;
+    struct node *next;
+};
+
+struct node* create_poly(struct node *start);
+struct node* display_poly(struct node *start);
+struct node* add_poly(struct node *start1, struct node *start2);
+struct node* insert_at_end(struct node *start, int coeff, int power);
+
+int main() {
+    struct node *start1 = NULL, *start2 = NULL, *start3 = NULL;
+    int option;
+
+    do {
+        printf("\n******** MAIN MENU *******");
+        printf("\n1: Enter the First Polynomial");
+        printf("\n2: Display the First Polynomial");
+        printf("\n3: Enter the Second Polynomial");
+        printf("\n4: Display the Second Polynomial");
+        printf("\n5: Add the Polynomials");
+        printf("\n6: Display the Result");
+        printf("\n7: Exit");
+        printf("\n\nEnter your option: ");
+        scanf("%d", &option);
+
+        switch(option) {
+            case 1: 
+                start1 = create_poly(start1);
+                break;
+            case 2: 
+                start1 = display_poly(start1);
+                break;
+            case 3: 
+                start2 = create_poly(start2);
+                break;
+            case 4: 
+                start2 = display_poly(start2);
+                break;
+            case 5: 
+                start3 = add_poly(start1, start2);
+                break;
+            case 6: 
+                start3 = display_poly(start3);
+                break;
+            case 7:
+                printf("\nExiting the program.\n");
+                break;
+            default:
+                printf("\nInvalid option.\n");
+        }
+    } while(option != 7);
+
+    return 0;
+}
+
+struct node* create_poly(struct node *start) {
+    int coeff, power;
+    struct node *new_node, *ptr;
+
+    printf("\nEnter the terms of the polynomial (enter -1 for power to end):\n");
+    printf("Enter coefficient and power: ");
+    scanf("%d %d", &coeff, &power);
+
+    while (power != -1) {
+        start = insert_at_end(start, coeff, power);
+
+        printf("Enter coefficient and power: ");
+        scanf("%d %d", &coeff, &power);
+    }
+
+    return start;
+}
+
+struct node* insert_at_end(struct node *start, int coeff, int power) {
+    struct node *new_node, *ptr;
+    new_node = (struct node*) malloc(sizeof(struct node));
+    new_node->coeff = coeff;
+    new_node->power = power;
+    new_node->next = NULL;
+
+    if (start == NULL) {
+        start = new_node;
+    } else {
+        ptr = start;
+        while (ptr->next != NULL) {
+            ptr = ptr->next;
+        }
+        ptr->next = new_node;
+    }
+
+    return start;
+}
+
+struct node* display_poly(struct node *start) {
+    struct node *ptr;
+    if (start == NULL) {
+        printf("\nThe polynomial is empty.\n");
+        return start;
+    }
+
+    printf("\nPolynomial: ");
+    ptr = start;
+    while (ptr != NULL) {
+        printf("%dx^%d ", ptr->coeff, ptr->power);
+        if (ptr->next != NULL && ptr->coeff >= 0)
+            printf("+ ");
+        ptr = ptr->next;
+    }
+    printf("\n");
+
+    return start;
+}
+
+struct node* add_poly(struct node *start1, struct node *start2) {
+    struct node *ptr1 = start1, *ptr2 = start2, *start3 = NULL;
+
+    while (ptr1 != NULL && ptr2 != NULL) {
+        if (ptr1->power == ptr2->power) {
+            start3 = insert_at_end(start3, ptr1->coeff + ptr2->coeff, ptr1->power);
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+        } else if (ptr1->power > ptr2->power) {
+            start3 = insert_at_end(start3, ptr1->coeff, ptr1->power);
+            ptr1 = ptr1->next;
+        } else {
+            start3 = insert_at_end(start3, ptr2->coeff, ptr2->power);
+            ptr2 = ptr2->next;
+        }
+    }
+
+    while (ptr1 != NULL) {
+        start3 = insert_at_end(start3, ptr1->coeff, ptr1->power);
+        ptr1 = ptr1->next;
+    }
+
+    while (ptr2 != NULL) {
+        start3 = insert_at_end(start3, ptr2->coeff, ptr2->power);
+        ptr2 = ptr2->next;
+    }
+
+    return start3;
+}
+```
+##Ds lab 5
+```c
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#define MAX 5
+int s[MAX],top=-1;
+void push(int s[],int val);
+int pop(int s[]);
+int peek(int s[]);
+void display(int s[]);
+int main()
+{
+   int val,option;
+   do
+   {
+     printf("\n****** MAIN MENU********");
+     printf("\n 1: PUSH");
+     printf("\n 2: POP");
+     printf("\n 3: PEEK");
+     printf("\n 4: DISPLAY");
+     printf("\n 5: EXIT");
+     printf("\n Enter Your option :");
+     scanf("%d",&option);
+     switch(option)
+     {
+  case 1: printf("\n Enter the Number to be pushed on stack");
+    scanf("%d",&val);
+    push(s,val);
+    break;
+  case 2:
+    val=pop(s);
+    if(val !=-1)
+    printf("\n The value deleted from stack is : %d",val);
+    break;
+  case 3:
+    val=peek(s);
+    if(val !=-1)
+    printf("\n The value stored at top of stack is : %d",val);
+    break;
+  case 4: display(s);
+    break;
+      }
+  }while(option != 5);
+  return 0;
+}
+void push (int s[],int val)
+{
+  if(top==MAX-1)
+  {
+     printf("\n STACK OVERFLOW");
+  }
+  else
+  {
+    top++;
+    s[top]=val;
+  }
+}
+int pop(int s[])
+{
+   int val;
+   if(top == -1)
+   {
+     printf("\n STACK UNDERFLOW");
+     return -1;
+   }
+   else
+   {
+      val=s[top];
+      top--;
+      return val;
+   }
+}
+int peek(int s[])
+{
+
+   if(top == -1)
+   {
+     printf("\n STACK UNDERFLOW");
+     return -1;
+   }
+   else
+      return (s[top]);
+}
+void display(int s[])
+{
+  int i;
+  if(top == -1)
+   {
+     printf("\n STACK EMPTY");
+   }
+   else
+   {
+      for(i=top;i>=0;i--)
+  printf("\n %d\n",s[i]);
+   }
+}
+
+```
 ## Ds lab 6
 ```c
 #include<stdio.h>
