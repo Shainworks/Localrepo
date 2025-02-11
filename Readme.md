@@ -1074,223 +1074,112 @@ int main()
 ```c
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>  // for getch() in Turbo C++
 
-struct node {
-    int info;
-    struct node *llink, *rlink;
+struct Node {
+    int data;
+    struct Node *left, *right;
 };
 
-typedef struct node* NODE;
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
 
-// Function prototypes
-NODE insert(int, NODE);
-NODE getnode();
-NODE minimum(NODE);
-void inorder(NODE);
-void preorder(NODE);
-void postorder(NODE);
-void iterative_search(int, NODE);
-NODE delete_item(int, NODE);
+// Function to insert a node into the BST
+struct Node* insert(struct Node* root, int data) {
+    if (root == NULL) {
+        return createNode(data);
+    }
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+    return root;
+}
 
+// Inorder traversal (Left, Root, Right)
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+// Preorder traversal (Root, Left, Right)
+void preorder(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+// Postorder traversal (Left, Right, Root)
+void postorder(struct Node* root) {
+    if (root != NULL) {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+// Main function to provide the menu
 int main() {
-    int ch, item;
-    NODE root = NULL, min;
+    struct Node* root = NULL;
+    int choice, n, data, i;
 
-    while (1) {
-        printf("\nBinary Search Tree Operations:\n");
-        printf("1. Insert\n2. Inorder Traversal\n3. Preorder Traversal\n");
-        printf("4. Postorder Traversal\n5. Search\n6. Find Minimum\n7. Delete\n8. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &ch);
+    do {
+        printf("\nMenu:");
+        printf("\n1. Create BST with N integers");
+        printf("\n2. Inorder Traversal");
+        printf("\n3. Preorder Traversal");
+        printf("\n4. Postorder Traversal");
+        printf("\n5. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
 
-        switch (ch) {
+        switch (choice) {
             case 1:
-                printf("Enter the item to be inserted: ");
-                scanf("%d", &item);
-                root = insert(item, root);
+                printf("Enter the number of nodes: ");
+                scanf("%d", &n);
+                printf("Enter %d integers: ", n);
+                for (i = 0; i < n; i++) {
+                    scanf("%d", &data);
+                    root = insert(root, data);
+                }
+                printf("BST created successfully.\n");
                 break;
             case 2:
-                printf("Inorder traversal: ");
+                printf("Inorder Traversal: ");
                 inorder(root);
                 printf("\n");
                 break;
             case 3:
-                printf("Preorder traversal: ");
+                printf("Preorder Traversal: ");
                 preorder(root);
                 printf("\n");
                 break;
             case 4:
-                printf("Postorder traversal: ");
+                printf("Postorder Traversal: ");
                 postorder(root);
                 printf("\n");
                 break;
             case 5:
-                if (root == NULL) {
-                    printf("Tree is empty.\n");
-                } else {
-                    printf("Enter the item to search: ");
-                    scanf("%d", &item);
-                    iterative_search(item, root);
-                }
+                printf("Exiting the program.\n");
                 break;
-            case 6:
-                min = minimum(root);
-                if (min == NULL) {
-                    printf("Tree is empty.\n");
-                } else {
-                    printf("Smallest element = %d\n", min->info);
-                }
-                break;
-            case 7:
-                printf("Enter the node to be deleted: ");
-                scanf("%d", &item);
-                root = delete_item(item, root);
-                break;
-            case 8:
-                exit(0);
             default:
-                printf("Invalid choice! Try again.\n");
+                printf("Invalid choice! Please try again.\n");
         }
-    }
+    } while (choice != 5);
+
+    getch();  // Pause the program in Turbo C++
     return 0;
-}
-
-// Function to create a new node
-NODE getnode() {
-    NODE x = (NODE)malloc(sizeof(struct node));
-    if (x == NULL) {
-        printf("Out of memory!\n");
-        exit(0);
-    }
-    return x;
-}
-
-// Function to find the minimum value node
-NODE minimum(NODE root) {
-    if (root == NULL) return NULL;
-    while (root->llink != NULL)
-        root = root->llink;
-    return root;
-}
-
-// Function to insert an element into BST
-NODE insert(int item, NODE root) {
-    NODE temp = getnode();
-    temp->info = item;
-    temp->llink = temp->rlink = NULL;
-
-    if (root == NULL) return temp;
-
-    NODE cur = root, prev = NULL;
-    while (cur != NULL) {
-        prev = cur;
-        if (item < cur->info)
-            cur = cur->llink;
-        else
-            cur = cur->rlink;
-    }
-    if (item < prev->info)
-        prev->llink = temp;
-    else
-        prev->rlink = temp;
-
-    return root;
-}
-
-// Inorder traversal (Left - Root - Right)
-void inorder(NODE root) {
-    if (root != NULL) {
-        inorder(root->llink);
-        printf("%d ", root->info);
-        inorder(root->rlink);
-    }
-}
-
-// Preorder traversal (Root - Left - Right)
-void preorder(NODE root) {
-    if (root != NULL) {
-        printf("%d ", root->info);
-        preorder(root->llink);
-        preorder(root->rlink);
-    }
-}
-
-// Postorder traversal (Left - Right - Root)
-void postorder(NODE root) {
-    if (root != NULL) {
-        postorder(root->llink);
-        postorder(root->rlink);
-        printf("%d ", root->info);
-    }
-}
-
-// Iterative search in BST
-void iterative_search(int item, NODE root) {
-    while (root != NULL) {
-        if (item == root->info) {
-            printf("Successful Search: %d found in the tree.\n", item);
-            return;
-        }
-        if (item < root->info)
-            root = root->llink;
-        else
-            root = root->rlink;
-    }
-    printf("Unsuccessful Search: %d not found in the tree.\n", item);
-}
-
-// Function to delete a node from BST
-NODE delete_item(int item, NODE root) {
-    if (root == NULL) {
-        printf("Tree is empty.\n");
-        return root;
-    }
-
-    NODE parent = NULL, cur = root;
-
-    // Find the node to be deleted
-    while (cur != NULL && cur->info != item) {
-        parent = cur;
-        if (item < cur->info)
-            cur = cur->llink;
-        else
-            cur = cur->rlink;
-    }
-
-    if (cur == NULL) {
-        printf("Item not found in the tree.\n");
-        return root;
-    }
-
-    // Case 1: Node has no children
-    if (cur->llink == NULL && cur->rlink == NULL) {
-        if (parent == NULL)
-            root = NULL;
-        else if (parent->llink == cur)
-            parent->llink = NULL;
-        else
-            parent->rlink = NULL;
-        free(cur);
-    }
-    // Case 2: Node has one child
-    else if (cur->llink == NULL || cur->rlink == NULL) {
-        NODE child = (cur->llink != NULL) ? cur->llink : cur->rlink;
-        if (parent == NULL)
-            root = child;
-        else if (parent->llink == cur)
-            parent->llink = child;
-        else
-            parent->rlink = child;
-        free(cur);
-    }
-    // Case 3: Node has two children
-    else {
-        NODE suc = minimum(cur->rlink);
-        int suc_value = suc->info;
-        root = delete_item(suc->info, root);
-        cur->info = suc_value;
-    }
-    return root;
 }
 ```
 ## Ds lab 7
