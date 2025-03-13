@@ -1353,4 +1353,196 @@ void main()
     }
 }
 ```
+#include<stdio.h>
+#include<conio.h>
+int a[10][10], n;
+void bfs(int);
+void main( )
+{
+int i, j,src;
+clrscr( );
+printf("\n enter the no of nodes:\t");
+scanf("%d", &n);
+printf("\n enter the adjacency matrix:\n");
+for(i=1;i<=n;i++)
+{
+for(j=1;j<=n;j++)
+{
+scanf("%d", &a[i][j]);
+}
+}
+printf("\n enter the source node:\t");
+scanf("%d", &src);
+bfs(src);
+getch( );
+}
+void bfs(int src)
+{
+int q[10], f=0, r=-1, vis[10], i, j;
+for(j=1;j<=n;j++)
+{
+vis[j]=0;
+}
+vis[src]=1;
+r=r+1;
+q[r]=src;
+while(f<=r)
+{
+i=q[f];
+f=f+1;
+for(j=1;j<=n;j++)
+{
+if(a[i][j]==1&&vis[j]!=1)
+{
+vis[j]=1;
+r=r+1;
+q[r]=j;
+}
+}
+}
+for(j=1;j<=n;j++)
+{
+if(vis[j]!=1)
+{
+printf("\n Node %d is not reachable\n",j);
+}
+else
+{
+printf("\n Node %d is reachable\n",j);
+}
+}
+}
+#include<stdio.h>
+#include<conio.h>
+const int MAX = 10;
+void fnTopological(int a[MAX][MAX], int n);
+void main( )
+{
+int a[MAX][MAX], n;
+int i, j;
+clrscr( );
+printf("\n Enter the number of vertices : ");
+scanf("%d", &n);
+printf("Enter the adjacency matrix -\n");
+for (i=0; i<n; i++)
+for (j=0; j<n; j++)
+scanf("%d", &a[i][j]);
+fnTopological(a,n);
+printf("\n");
+getch();
+}
+void fnTopological(int a[MAX][MAX], int n)
+{
+int in[MAX], out[MAX], stack[MAX], top=-1;
+int i, j, k=0;
+ 
+for (i=0;i<n;i++) 
+{
+in[i] = 0;
+for (j=0; j<n; j++)
+if (a[j][i] == 1)
+in[i]++;
+}
+while(1)
+{
+for (i=0;i<n;i++)
+{
+if (in[i] == 0)
+{
+stack[++top] = i;
+in[i] = -1;
+}
+}
+if (top == -1)
+break;
+out[k] = stack[top--];
+for (i=0;i<n;i++)
+{
+if (a[out[k]][i] == 1)
+in[i]--;
+}
+k++;
+}
+printf("\nTopological Sorting is:- \n");
+for (i=0;i<k;i++)
+printf("%d ",out[i] + 1);
+}
+#include<stdio.h>
+#include<conio.h>
+#include<process.h>
+void split(int[], int, int);
+void combine(int[], int, int, int);
+void main( )
+{
+int a[20], i, n;
+clrscr( );
+printf("\n enter the no. of elements:\t");
+scanf("%d", &n);
+printf("\n enter the elements:\n");
+for(i=0;i<=n-1;i++)
+{
+scanf("%d", &a[i]);
+}
+split(a, 0, n-1);
+printf("\n the sorted array is:\n");
+for(i=0;i<=n-1;i++)
+{
+printf("%d\t",a[i]);
+}
+getch( );
+}
+void split(int a[], int low, int high)
+{
+int mid;
+if(low<high)
+{
+mid=(low+high)/2;
+split(a,low,mid);
+split(a,mid+1,high);
+combine(a,low,mid,high);
+}
+}
+void combine(int a[], int low, int mid, int high)
+{
+int c[20],i,j,k;
+i=k=low;
+j=mid+1;
+while(i<=mid&&j<=high)
+{
+if(a[i]<a[j])
+{
+c[k]=a[i];
+++k;
+++i;
+}
+else
+{
+c[k]=a[j];
+++k;
+++j;
+}
+}
+if(i>mid)
+{
+while(j<=high)
+{
+c[k]=a[j];
+++k;
+++j;
+}
+}
+if(j>high)
+{
+while(i<=mid)
+{
+c[k]=a[i];
+++k;
+++i;
+}
+}
+for(i=low;i<=high;i++)
+{
+a[i]=c[i];
+}
+}
 
