@@ -1,125 +1,245 @@
-## ADA lab 4
+## 1
 ```c
 #include<stdio.h>
-#include<conio.h>
-void quick_sort(int[ ], int, int);
-int partition(int[ ], int, int);
+#include<stdlib.h>
+#include<unistd.h>
 void main()
 {
-int a[20], i, n;
-clrscr();
-printf("\n Enter the no. of elements:\t");
-scanf("%d", &n);
-printf("\n Enter the elements:\n");
-for(i=0;i<=n-1;i++)
+int pid; 
+pid=fork();
+if(pid<0)
 {
-scanf("%d", &a[i]);
+printf("fork failed");
+exit(1);
 }
-quick_sort(a, 0, n-1);
-printf("\n The sorted array is:\n");
-for(i=0;i<=n-1;i++)
+else if(pid==0)
 {
-printf("%d\t", a[i]);
-}
-getch();
-}
-void quick_sort(int a[], int low, int high)
-{
-int j;
-if(low<high)
-{
-j = partition(a, low, high);
-quick_sort(a, low, j-1);
-quick_sort(a, j+1, high);
-}
-}
-int partition(int a[ ], int low, int high)
-{
-int i, j, key, temp;
-key = a[low];
-i = low+1;
-j = high;
-while(1)
-{
-while(a[i] < key && i <= high)
-{
-++i;
-}
-while(a[j] > key && j >= low)
-{
---j;
-}
-if(i < j)
-{
-temp = a[i];
-a[i] = a[j];
-a[j] = temp;
+execlp("whoami","ls",NULL);
+exit(0);
 }
 else
 {
-temp = a[low];
-a[low] = a[j];
-a[j] = temp;
-return j;
-}
+printf("\n Process id is :%d\n",getpid());
+wait(NULL);
+exit(0);
 }
 }
 ```
-## OS lab 6
+## 2
+```c
+#include<stdio.h>
+#include<windows.h>
+int main()
+{
+ HANDLE hProcess,hThread;
+ STARTUPINFO si;
+ PROCESS_INFORMATION pi;
+ ZeroMemory(&si,sizeof(si));
+ si.cb=sizeof(si);
+ ZeroMemory(&pi,sizeof(pi));
+ 
+if(!CreateProcess("C:\\Windows\\System32\\cmd.exe",NULL,NULL,NULL,FALSE,0,NUL
+L,NULL,&si,&pi))
+ {
+ printf("Sorry! CreateProcess() failed\n");
+ return -1;
+ }
+ else
+ {
+ printf("Well CreateProcess() looks OK\n");
+ printf("exit after 5000ms\n");
+ }
+ WaitForSingleObject(pi.hProcess,5000);
+ CloseHandle(pi.hProcess);
+ CloseHandle(pi.hThread);
+ return 0;
+}
+```
+## 3
 ```c
 #include<stdio.h>
 #include<conio.h>
-struct process
+struct fileTable
 {
-int pid;
-int bt;
-int wt;
-int tt;
-}p[10],temp;
-int main()
+char name[20];
+int sb, nob;
+}ft[30];
+void main()
 {
-int i,j,n,totwt,tottt;
-float avg1,avg2;
+int i, j, n;
+char s[20];
 clrscr();
-printf("\nEnter the number of process:\t");
+printf("Enter no of files :");
 scanf("%d",&n);
-for(i=1;i<=n;i++)
+for(i=0;i<n;i++)
 {
-p[i].pid=i;
-printf("\nEnter the burst time:\t");
-scanf("%d",&p[i].bt);
+printf("\nEnter file name %d :",i+1);
+scanf("%s",ft[i].name);
+printf("Enter starting block of file %d :",i+1);
+scanf("%d",&ft[i].sb);
+printf("Enter no of blocks in file %d :",i+1);
+scanf("%d",&ft[i].nob);
 }
-for(i=1;i<n;i++){
-for(j=i+1;j<=n;j++)
+printf("\nEnter the file name to be searched-- ");
+scanf("%s",s);
+for(i=0;i<n;i++)
+if(strcmp(s, ft[i].name)==0)
+break;
+if(i==n)
+printf("\nFile Not Found");
+else
 {
-if(p[i].bt>p[j].bt)
-{
-temp.pid=p[i].pid;
-p[i].pid=p[j].pid;
-p[j].pid=temp.pid;
-temp.bt=p[i].bt;p[i].bt=p[j].bt;
-p[j].bt=temp.bt;
-}}}
-p[1].wt=0;
-p[1].tt=p[1].bt+p[1].wt;
-i=2;
-while(i<=n){
-p[i].wt=p[i-1].bt+p[i-1].wt;
-p[i].tt=p[i].bt+p[i].wt;
-i++;
+printf("\nFILE NAME START BLOCK NO OF BLOCKS BLOCKS OCCUPIED\n");
+printf("\n%s\t\t%d\t\t%d\t",ft[i].name,ft[i].sb,ft[i].nob);
+for(j=0;j<ft[i].nob;j++)
+printf("%d, ",ft[i].sb+j);
 }
-i=1;
-totwt=tottt=0;
-printf("\nProcess id \tbt \twt \ttt");
-while(i<=n){
-printf("\n\t%d \t%d \t%d t%d\n",p[i].pid,p[i].bt,p[i].wt,p[i].tt);
-totwt=p[i].wt+totwt;
-tottt=p[i].tt+tottt;
-i++;
-} avg1=totwt/n;
-avg2=tottt/n;
-printf("\n Average waiting time=%f\n Average turnaround time=%f",avg1,avg2);
 getch();
-return 0;
+}
+```
+## 4
+```c
+#include<stdio.h> 
+struct
+{
+char dname[10],fname[10][10]; 
+int fcnt;
+}dir;
+void main()
+{
+int i,ch; char 
+f[30]; clrscr();
+dir.fcnt = 0;
+printf("\nEnter name of directory -- "); 
+scanf("%s", dir.dname);
+while(1)
+{
+printf("\n\n1. Create File\t2. Delete File\t3. Search File \n
+4. Display Files\t5. Exit\nEnter your choice -- "); 
+scanf("%d",&ch);
+switch(ch)
+{
+case 1: printf("\nEnter the name of the file -- "); 
+scanf("%s",dir.fname[dir.fcnt]); 
+dir.fcnt++; break;
+case 2: printf("\nEnter the name of the file -- "); 
+scanf("%s",f); 
+for(i=0;i<dir.fcnt;i++)
+{
+if(strcmp(f, dir.fname[i])==0)
+{
+printf("File %s is deleted ",f); strcpy(dir.fname[i],dir.fname[dir.fcnt-1]);
+break;
+}
+if(i==dir.fcnt)
+printf("File %s not found",f);
+else
+dir.fcnt--;
+break;
+case 3: printf("\nEnter the name of the file -- ");
+scanf("%s",f);
+for(i=0;i<dir.fcnt;i++)
+{
+if(strcmp(f, dir.fname[i])==0)
+{
+printf("File %s is found ", f);
+break;
+}
+}
+if(i==dir.fcnt)
+printf("File %s not found",f);
+break;
+case 4: if(dir.fcnt==0)
+printf("\nDirectory Empty");
+else
+{
+printf("\nThe Files are -- ");
+for(i=0;i<dir.fcnt;i++)
+printf("\t%s",dir.fname[i]);
+}
+break;
+default: exit (0);
+}
+}
+getch();
+}
+```
+## 5
+```c
+#include<stdio.h>
+int tph, philname[20], status[20], howhung, hu[20], cho; 
+void main()
+{
+int i; clrscr();
+printf("\n\nDINING PHILOSOPHER PROBLEM");
+printf("\nEnter the total no. of philosophers: ");
+scanf("%d",&tph);
+for(i=0;i<tph;i++)
+{
+philname[i]=(i+1); status[i]=1;
+}
+printf("How many are hungry : ");
+scanf("%d", &howhung);
+if(howhung==tph)
+{
+printf(“\n All are hungry..\nDead lock stage will occur”);
+printf(\n”Exiting\n”);
+else{
+for(i=0;i<howhung;i++){
+printf(“Enterphilosopher%dposition:”,(i+1));
+scanf(“%d”,&hu[i]);
+status[hu[i]]=2;
+}
+do
+{
+printf("1.One can eat at a time\t2.Two can eat at a time
+\t3.Exit\nEnter your choice:");
+scanf("%d", &cho);
+switch(cho)
+{
+case 1: one();
+break;
+case 2: two();
+break;
+case 3: exit(0);
+default: printf("\nInvalid option..");
+}
+}while(1);
+}
+}
+void one()
+{
+int pos=0, x, i;
+printf("\nAllow one philosopher to eat at any time\n");
+for(i=0;i<howhung; i++, pos++)
+{
+printf("\nP %d is granted to eat", philname[hu[pos]]);
+for(x=pos;x<howhung;x++)
+printf("\nP %d is waiting", philname[hu[x]]);
+}
+}
+void two()
+{
+int i, j, s=0, t, r, x;
+printf("\n Allow two philosophers to eat at same
+time\n"); for(i=0;i<howhung;i++)
+{
+for(j=i+1;j<howhung;j++)
+{
+if(abs(hu[i]-hu[j])>=1&& abs(hu[i]-hu[j])!=4)
+{
+printf("\n\ncombination %d \n", (s+1));
+t=hu[i];
+r=hu[j]; s++;
+printf("\nP %d and P %d are granted to eat", philname[hu[i]],
+philname[hu[j]]);
+for(x=0;x<howhung;x++)
+{
+if((hu[x]!=t)&&(hu[x]!=r))
+printf("\nP %d is waiting", philname[hu[x]]);
+}
+}
+}
+}
 }
 ```
