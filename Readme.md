@@ -70,7 +70,7 @@ Houston TX','F',25000,333445555,5),
             ('Ahmad','V','Jabbar',987987987,'1969-03-29','980 Dallas, 
 Houston TX','M',25000,987654321,4), 
             ('James','E','Borg',888665555,'1937-11-10','450 Stone, 
-Houston TX','M',55000,,1); 
+Houston TX','M',55000,456745,1); 
  
 INSERT INTO DEPARTMENT 
 VALUES      ('Research',5,333445555,'1988-05-22'), 
