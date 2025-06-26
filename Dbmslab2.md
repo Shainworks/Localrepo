@@ -63,8 +63,8 @@ insert into loan values(4444,'marine drive',1500000);
 insert into loan values(5555,'green park',7500000); 
 Here is your SQL code in a `.md` (Markdown) format:
 
-````markdown
-# SQL Queries
+
+
 
 ## 5a. Find all the customers who have at least two accounts at the main branch
 
