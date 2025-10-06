@@ -22,3 +22,4 @@ for i in range(len(fs.scores_)):
  print('feature %d:%f'%(i,fs.scores_[i]))
 pyplot.bar([i for i in range(len(fs.scores_))],fs.scores_)
 pyplot.show()
+https://drive.google.com/drive/folders/1SLV9dpMdTekcrZCdF24FS4iGCiPMugDC?usp=drive_link
