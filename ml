@@ -51,3 +51,38 @@ plt.xlabel("Features", fontsize=20)
 plt.ylabel("p_values", fontsize=20)
 plt.title("chi squared test base on p value")
 plt.show()
+5
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+from sklearn import tree
+from sklearn import metrics
+from  sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+#from sklearn.dataset import load_iris
+
+iris = pd.read_csv('iris.xls - iris.xls.csv')
+iris.head()
+
+x = iris.iloc[:,:-1]
+y = iris.iloc[:,-1]
+
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.33, random_state=42)
+treemodel = DecisionTreeClassifier()
+treemodel.fit(x_train,y_train)
+y_pred = treemodel.predict(x_test)
+plt.figure(figsize=(20,30))
+tree.plot_tree(treemodel,filled=True)
+# plt.show()
+# print(accuracy_score(y_test,y_pred))
+print(classification_report(y_test,y_pred))
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test,y_pred)
+print("Confusion Matrix:")
+print(cm)
+
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(y_test,y_pred)
+print("Accuracy of Decision Tree Model:",accuracy)
