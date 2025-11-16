@@ -20,9 +20,6 @@ dataset
 print("Old data frame length:", len(dataset)) 
 print("New data frame length:", len(dataset)) 
 print("Number of rows with at least 1 NA value:", len(dataset)-len(new_data)) 
-Old data frame length: 400 
-New data frame length: 400 
-Number of rows with at least 1 NA value: 0 
 new_df1=dataset.fillna(method="ffill") 
 new_df1
 new_df3=dataset.dropna(how='all') 
