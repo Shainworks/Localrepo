@@ -1,266 +1,347 @@
-CREATE TABLE EMPLOYEE 
-( Fname           VARCHAR(10)   NOT NULL, 
-  Minit           CHAR, 
-  Lname           VARCHAR(20)      NOT NULL, 
-  Ssn             CHAR(9)          NOT NULL, 
-  Bdate           DATE, 
-  Address         VARCHAR(30), 
-  Sex             CHAR(1), 
-  Salary          DECIMAL(5), 
-  Super_ssn       CHAR(9), 
-  Dno             INT               NOT NULL, 
-  PRIMARY KEY(Ssn)); 
+1. Write a C program for error detection using CRC-CCITT 
+(16-bits).  
+// Include headers   
+#include<stdio.h>   
+#include<string.h>   
+// length of the generator polynomial   
+#define N strlen(gen_poly)   
+// data to be transmitted and received   
+char data[28];   
+// CRC value   
+char check_value[28];   
+// generator polynomial   
+char gen_poly[10];   
+// variables    
+int data_length,i,j;   
+// function that performs XOR operation   
+void XOR(){   
+// if both bits are the same, the output is 0   
+// if the bits are different the output is 1   
+for(j = 1;j < N; j++)   
+check_value[j] = (( check_value[j] == gen_poly[j])?'0':'1');       
+}   
+// Function to check for errors on the receiver side   
+void receiver(){   
+// get the received data   
+    printf("Enter the received data: ");   
+    scanf("%s", data);   
+    printf("\n-----------------------------\n");   
+    printf("Data received: %s", data);   
+// Cyclic Redundancy Check   
+    crc();   
+// Check if the remainder is zero to find the error   
+    for(i=0;(i<N-1) && (check_value[i]!='1');i++);   
+        if(i<N-1)   
+          printf("\nError detected\n\n");   
+        else   
+            printf("\nNo error detected\n\n");   
+}   
+   
+void crc(){   
+    // initializing check_value   
+    for(i=0;i<N;i++)   
+        check_value[i]=data[i];   
+    do{   
+    // check if the first bit is 1 and calls XOR function   
+        if(check_value[0]=='1')   
+            XOR();   
+// Move the bits by 1 position for the next computation   
+        for(j=0;j<N-1;j++)   
+            check_value[j]=check_value[j+1];   
+        // appending a bit from data   
+        check_value[j]=data[i++];   
+    }while(i<=data_length+N-1);   
+// loop until the data ends   
+}   
+   
+int main()   
+{   
+    // get the data to be transmitted   
+    printf("\nEnter data to be transmitted: ");   
+    scanf("%s",data);   
+    printf("\n Enter the Generating polynomial: ");   
+    // get the generator polynomial   
+    scanf("%s",gen_poly);   
+    // find the length of data   
+    data_length=strlen(data);   
+    // appending n-1 zeros to the data   
+    for(i=data_length;i<data_length+N-1;i++)   
+        data[i]='0';   
+    printf("\n----------------------------------------");   
+// print the data with padded zeros   
+    printf("\n Data padded with n-1 zeros : %s",data);   
+    printf("\n----------------------------------------");   
+// Cyclic Redundancy Check   
+    crc();   
+// print the computed check value   
+    printf("\nCRC or Check value is : %s",check_value);   
+// Append data with check_value(CRC)     
+    for(i=data_length;i<data_length+N-1;i++)   
+        data[i]=check_value[i-data_length];   
+    printf("\n----------------------------------------");   
+// printing the final data to be sent   
+    printf("\n Final data to be sent : %s",data);   
+    printf("\n----------------------------------------\n");   
+// Calling the receiver function to check errors   
+    receiver();   
+        return 0;   
+}  
+2. Write a C program to generate Hamming Code for error 
+detection and correction.  
+#include <stdio.h> 
+#include <math.h> 
+int input[32]; 
+int code[32]; 
+int ham_calc(int,int); 
+void main() 
+{ 
+ int n,i,p_n = 0,c_l,j,k; 
+ printf("Please enter the length of the Data Word: "); 
+ scanf("%d",&n); 
+ printf("Please enter the Data Word:\n"); 
+ for(i=0;i<n;i++) 
+ { 
+  scanf("%d",&input[i]); 
+ } 
  
+ i=0; 
+ while(n>(int)pow(2,i)-(i+1)) 
+ { 
+  p_n++; 
+  i++; 
+ } 
+ c_l = p_n + n; 
+ j=k=0; 
+ for(i=0;i<c_l;i++) 
+ { 
+   
+  if(i==((int)pow(2,k)-1)) 
+  { 
+   code[i]=0; 
+   k++; 
+  } 
+  else 
+  { 
+   code[i]=input[j]; 
+   j++; 
+  } 
+ } 
+ for(i=0;i<p_n;i++) 
+ { 
+  int position = (int)pow(2,i); 
+  int value = ham_calc(position,c_l); 
+  code[position-1]=value; 
+ } 
+ printf("\nThe calculated Code Word is: "); 
+ for(i=0;i<c_l;i++) 
+  printf("%d",code[i]); 
+ printf("\n"); 
+ printf("Please enter the received Code Word:\n"); 
+ for(i=0;i<c_l;i++) 
+  scanf("%d",&code[i]); 
  
-CREATE TABLE DEPARTMENT 
-( Dname           VARCHAR(15)       NOT NULL, 
-  Dnumber         INT               NOT NULL, 
-  Mgr_ssn         CHAR(9)           NOT NULL, 
-  Mgr_start_date  DATE, 
-  PRIMARY KEY (Dnumber), 
-  UNIQUE      (Dname), 
-  FOREIGN KEY (Mgr_ssn) REFERENCES EMPLOYEE(Ssn) ); 
+ int error_pos = 0; 
+ for(i=0;i<p_n;i++) 
+ { 
+  int position = (int)pow(2,i); 
+  int value = ham_calc(position,c_l); 
+  if(value != 0) 
+   error_pos+=position; 
+ } 
+ if(error_pos == 1) 
+  printf("The received Code Word is correct.\n"); 
+ else 
+  printf("Error at bit position: %d\n",error_pos); 
+} 
+int ham_calc(int position,int c_l) 
+{ 
+ int count=0,i,j; 
+ i=position-1; 
+ while(i<c_l) 
+ { 
+  for(j=i;j<i+position;j++) 
+  { 
+   if(code[j] == 1) 
+    count++; 
+  } 
+  i=i+2*position; 
+ } 
+ if(count%2 == 0) 
+  return 0; 
+ else 
+  return 1; 
+}
+3. Write a C program to implement Distance vector Routing 
+algorithm
  
+#include<stdio.h> 
+int dist[50][50],temp[50][50],n,i,j,k,x; 
+void dvr(); 
+int main() 
+{ 
+    printf("\nEnter the number of nodes : "); 
+    scanf("%d",&n); 
+    printf("\nEnter the distance matrix :\n"); 
+    for(i=0;i<n;i++) 
+    { 
+        for(j=0;j<n;j++) 
+        {    
+            scanf("%d",&dist[i][j]); 
+            dist[i][i]=0; 
+            temp[i][j]=j; 
+        } 
+        printf("\n"); 
+ } 
+     dvr();  
+     printf("enter value of i &j:"); 
+     scanf("%d",&i); 
+  scanf("%d",&j);    
+  printf("enter the new cost"); 
+  scanf("%d",&x);    
+  dist[i][j]=x; 
+  printf("After update\n\n");      
+     dvr(); 
+  return 0;  
+} 
+void dvr() 
+{ 
+ for (i = 0; i < n; i++) 
+            for (j = 0; j < n; j++) 
+             for (k = 0; k < n; k++) 
+                 if (dist[i][k] + dist[k][j] < dist[i][j]) 
+                 { 
+                     dist[i][j] = dist[i][k] + dist[k][j]; 
+                     temp[i][j] = k; 
+                 } 
+                  
+ for(i=0;i<n;i++) 
+        { 
+            printf("\n\nState value for router %d is \n",i+1); 
+            for(j=0;j<n;j++) 
+                printf("\t\nnode %d via %d Distance%d",j+1,temp[i][j]+1,dist[i][j]); 
+        }    
+    printf("\n\n"); 
  
-CREATE TABLE DEPT_LOCATIONS 
-( Dnumber         INT               NOT NULL, 
-  Dlocation       VARCHAR(15)       NOT NULL, 
-  PRIMARY KEY (Dnumber, Dlocation), 
-  FOREIGN KEY (Dnumber) REFERENCES DEPARTMENT(Dnumber) ); 
+}
+4. Write a C program to implement Open Shortest Path First 
+Routing Algorithm 
  
- 
-Create table PROJECT 
-( pname       varchar(25) not nullunique, 
-  pnumber     int not null primary key, 
-  plocation   varchar(15), 
-  dnum        int not null, 
-  foreign key(dnum) references DEPARTMENT(Dnumber)); 
-    
-  
-CREATE TABLE WORKS_ON 
-( Essn            CHAR(9)           NOT NULL, 
-  Pno             INT               NOT NULL, 
-  Hours           DECIMAL(3,1)      NOT NULL, 
-  PRIMARY KEY (Essn, Pno), 
-  FOREIGN KEY (Essn) REFERENCES EMPLOYEE(Ssn), 
-  FOREIGN KEY (Pno) REFERENCES PROJECT(Pnumber) ); 
- 
- 
-CREATE TABLE DEPENDENT 
-( Essn            CHAR(9)           NOT NULL, 
-  Dependent_name  VARCHAR(15)       NOT NULL, 
-  Sex             CHAR, 
-  Bdate           DATE, 
-  Relationship    VARCHAR(8), 
-  PRIMARY KEY (Essn, Dependent_name), 
-  FOREIGN KEY (Essn) REFERENCES EMPLOYEE(Ssn) ); 
- 
- 
-INSERT INTO EMPLOYEE 
-VALUES ('Franklin','T','Wong',333445555,'1965-12-08','638 Voss, 
-Houston TX','M',40000,888665555,5), 
-            ('Alicia','J','Zelaya',999887777,'1968-01-19','3321 
-Castle, Spring TX','F',25000,987654321,4), 
-            ('Jennifer','S','Wallace',987654321,'1941-06-20','291 
-Berry, Bellaire TX','F',43000,888665555,4), 
-            ('Ramesh','K','Narayan',666884444,'1962-09-15','975 Fire 
-Oak, Humble TX','M',38000,333445555,5), 
-            ('Joyce','A','English',453453453,'1972-07-31','5631 Rice, 
-Houston TX','F',25000,333445555,5), 
-            ('Ahmad','V','Jabbar',987987987,'1969-03-29','980 Dallas, 
-Houston TX','M',25000,987654321,4), 
-            ('James','E','Borg',888665555,'1937-11-10','450 Stone, 
-Houston TX','M',55000,456745,1); 
- 
-INSERT INTO DEPARTMENT 
-VALUES      ('Research',5,333445555,'1988-05-22'), 
-            ('Administration',4,987654321,'1995-01-01'), 
-            ('Headquarters',1,888665555,'1981-06-19'); 
- 
-INSERT INTO PROJECT 
-VALUES      ('ProductX',1,'Bellaire',5), 
-            ('ProductY',2,'Sugarland',5), 
-            ('ProductZ',3,'Houston',5), 
-            ('Computerization',10,'Stafford',4), 
-            ('Reorganization',20,'Houston',1), 
-            ('Newbenefits',30,'Stafford',4); 
- 
-INSERT INTO WORKS_ON 
-VALUES     (123456789,1,32.5), 
-           (123456789,2,7.5), 
-           (666884444,3,40.0), 
-           (453453453,1,20.0), 
-           (453453453,2,20.0), 
-           (333445555,2,10.0), 
-           (333445555,3,10.0), 
-           (333445555,10,10.0), 
-           (333445555,20,10.0), 
-           (999887777,30,30.0); 
- 
-            
- 
-INSERT INTO DEPENDENT 
-VALUES      (333445555,'Alice','F','1986-04-04','Daughter'), 
-            (333445555,'Theodore','M','1983-10-25','Son'), 
-            (333445555,'Joy','F','1958-05-03','Spouse'), 
-            (987654321,'Abner','M','1942-02-28','Spouse'), 
-            (123456789,'Michael','M','1988-01-04','Son'), 
-            (123456789,'Alice','F','1988-12-30','Daughter'), 
-            (123456789,'Elizabeth','F','1967-05-05','Spouse'); 
- 
-INSERT INTO DEPT_LOCATIONS 
-VALUES      (1,'Houston'), 
-            (4,'Stafford'), 
-            (5,'Bellaire'), 
-            (5,'Sugarland'), 
-            (5,'Houston'); 
-
-
-
-### ✅ 1. Retrieve the name and address of all employees who work for the ‘Research’ department.
-
-```sql
-SELECT Fname, Minit, Lname, Address
-FROM EMPLOYEE e, DEPARTMENT d
-WHERE e.Dno = d.Dnumber AND d.Dname = "Research";
-```
-
----
-
-### ✅ 2. For every project located in ‘Stafford’, list the project number, the controlling department number, and the department manager’s last name, address, and birth date.
-
-```sql
-SELECT e.Lname, e.Bdate, e.Address, p.Pnumber, p.Dnum
-FROM EMPLOYEE e, PROJECT p, DEPARTMENT d
-WHERE p.Plocation = "Stafford" AND p.Dnum = d.Dnumber AND d.Mgr_ssn = e.Ssn;
-```
-
----
-
-### ✅ 3. For each employee, retrieve the employee’s first and last name and the first and last name of their immediate supervisor.
-
-```sql
-SELECT e1.Fname, e1.Lname, e2.Fname AS manager_Fname, e2.Lname AS manager_Lname
-FROM EMPLOYEE AS e1, EMPLOYEE AS e2
-WHERE e2.Ssn = e1.Super_ssn;
-```
-
----
-
-### ✅ 4. Make a list of all project numbers for projects that involve an employee whose last name is ‘Smith’, either as a worker or as a manager of the department that controls the project.
-
-```sql
-(SELECT DISTINCT Pnumber
- FROM PROJECT, DEPARTMENT, EMPLOYEE
- WHERE Dnum = Dnumber AND Mgr_ssn = Ssn AND Lname = "Smith")
-
-UNION
-
-(SELECT DISTINCT Pnumber
- FROM PROJECT, WORKS_ON, EMPLOYEE
- WHERE Pnumber = Pno AND Essn = Ssn AND Lname = "Smith");
-```
-
----
-
-### ✅ 5. Retrieve all employees whose address is in Houston, Texas.
-
-```sql
-SELECT Fname, Minit, Lname
-FROM EMPLOYEE
-WHERE Address LIKE "%Houston%TX%";
-```
-
----
-
-### ✅ 6. Retrieve all employees in department 5 whose salary is between \$30,000 and \$40,000.
-
-```sql
-SELECT *
-FROM EMPLOYEE e, DEPARTMENT d
-WHERE e.Dno = d.Dnumber AND d.Dnumber = 5
-  AND e.Salary BETWEEN 30000 AND 40000;
-```
-
----
-
-### ✅ 7. Retrieve the names of all employees who do not have supervisors.
-
-```sql
-SELECT Fname, Minit, Lname
-FROM EMPLOYEE e
-WHERE NOT EXISTS (
-  SELECT * FROM EMPLOYEE AS s WHERE e.Super_ssn = s.Ssn
-);
-```
-
----
-
-### ✅ 8. Retrieve the name of each employee who has a dependent with the same first name and gender.
-
-```sql
-SELECT Fname, Minit, Lname
-FROM EMPLOYEE e, DEPENDENT d
-WHERE e.Fname = d.Dependent_name AND e.Sex = d.Sex;
-```
-
----
-
-### ✅ 9. Retrieve the names of employees who have no dependents.
-
-```sql
-SELECT Fname, Minit, Lname
-FROM EMPLOYEE
-WHERE NOT EXISTS (
-  SELECT * FROM DEPENDENT WHERE Ssn = Essn
-);
-```
-
----
-
-### ✅ 10. List the names of managers who have at least one dependent.
-
-```sql
-SELECT Fname, Minit, Lname
-FROM EMPLOYEE
-WHERE EXISTS (
-  SELECT * FROM DEPARTMENT WHERE Ssn = Mgr_ssn AND Dno = Dnumber
-)
-AND EXISTS (
-  SELECT * FROM DEPENDENT WHERE Ssn = Essn
-);
-```
-
----
-
-### ✅ 11. Retrieve the Social Security numbers of all employees who work on project numbers 1, 2, or 3.
-
-```sql
-SELECT DISTINCT Essn
-FROM WORKS_ON
-WHERE Pno IN (1, 2, 3);
-```
-
----
-
-### ✅ 12. Find the sum, maximum, minimum, and average salary of employees in the ‘Research’ department.
-
-```sql
-SELECT SUM(Salary), MAX(Salary), MIN(Salary), AVG(Salary)
-FROM EMPLOYEE, DEPARTMENT
-WHERE Dno = Dnumber AND Dname = "Research";
-```
-
----
-
-### ✅ 13. For each department, retrieve the department number, the number of employees, and their average salary.
-
-```sql
-SELECT Dno, COUNT(*), AVG(Salary)
-FROM EMPLOYEE
-GROUP BY Dno;
-```
-
----
-
-
+  #include <stdio.h> 
+  #include <string.h> 
+  int main() 
+  { 
+  int count,src_router,i,j,k,w,v,min; 
+  int cost_matrix[100][100],dist[100],last[100]; 
+  int flag[100]; 
+   printf("\n Enter the no of routers"); 
+  scanf("%d",&count);  
+  printf("\n Enter the cost matrix values:"); 
+  for(i=0;i<count;i++) 
+  { 
+  for(j=0;j<count;j++) 
+  { 
+   printf("\n%d->%d:",i,j); 
+  scanf("%d",&cost_matrix[i][j]); 
+  if(cost_matrix[i][j]<0)cost_matrix[i][j]=1000; 
+  } 
+  } 
+   printf("\n Enter the source router:"); 
+  scanf("%d",&src_router); 
+  for(v=0;v<count;v++) 
+  { 
+  flag[v]=0; 
+  last[v]=src_router; 
+  dist[v]=cost_matrix[src_router][v]; 
+  } 
+  flag[src_router]=1; 
+  for(i=0;i<count;i++) 
+  { 
+  min=1000; 
+  for(w=0;w<count;w++) 
+  { 
+  if(!flag[w]) 
+  if(dist[w]<min) 
+  { 
+  v=w; 
+  min=dist[w]; 
+  } 
+  } 
+  flag[v]=1; 
+  for(w=0;w<count;w++) 
+  { 
+  if(!flag[w]) 
+  if(min+cost_matrix[v][w]<dist[w]) 
+  { 
+  dist[w]=min+cost_matrix[v][w]; 
+  last[w]=v; 
+  } 
+  } 
+  } 
+  for(i=0;i<count;i++) 
+  { 
+   printf("\n%d==>%d:Path taken:%d",src_router,i,i); 
+  w=i; 
+  while(w!=src_router) 
+  { 
+   printf("\n<--%d",last[w]);w=last[w]; 
+  } 
+printf("\n Shortest path cost:%d",dist[i]); 
+} 
+}
+5. Write a C Program to implement Border Gateway Protocol 
+(BGP) 
+#include <stdio.h> 
+#include<conio.h> 
+int main() 
+{ 
+int n; 
+int i,j,k; 
+int a[10][10],b[10][10]; 
+printf("\n Enter the number of nodes:"); 
+scanf("%d",&n); 
+for(i=0;i<n;i++) 
+{ 
+for(j=0;j<n;j++) 
+{ 
+printf("\n Enter the distance between the host %d - %d:",i+1,j+1); 
+scanf("%d",&a[i][j]); 
+}} 
+for(i=0;i<n;i++) 
+{ 
+for(j=0;j<n;j++) 
+{ 
+printf("%d\t",a[i][j]); 
+} 
+printf("\n"); 
+} 
+for(k=0;k<n;k++) 
+{ 
+for(i=0;i<n;i++) 
+{ 
+for(j=0;j<n;j++) 
+{ 
+if(a[i][j]>a[i][k]+a[k][j]) 
+{ 
+a[i][j]=a[i][k]+a[k][j]; 
+}}}} 
+for(i=0;i<n;i++) 
+{ 
+for(j=0;j<n;j++) 
+{ 
+b[i][j]=a[i][j]; 
+if(i==j) 
+{ 
+b[i][j]=0; 
+} 
+}} 
+printf("\n The output matrix:\n"); 
+for(i=0;i<n;i++) 
+{ 
+for(j=0;j<n;j++) 
+{ 
+printf("%d\t",b[i][j]); 
+} 
+printf("\n"); 
+} 
+getch(); 
+} 
