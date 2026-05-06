@@ -170,4 +170,69 @@ int main() {
 
 ---
 
-If you want, I can also align this with **lab record format (aim, algorithm, output)** which is usually required in exams.
+#include <stdio.h>
+#include <ctype.h>
+
+// Function to encrypt/decrypt using alphabet reversal
+void encryptDecrypt(char text[]) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        if (isalpha(text[i])) {  // Check if it's a letter
+            if (isupper(text[i])) {
+                text[i] = 'Z' - (text[i] - 'A');  // Reverse A-Z
+            } else if (islower(text[i])) {
+                text[i] = 'z' - (text[i] - 'a');  // Reverse a-z
+            }
+        }
+    }
+}
+
+int main() {
+    char message[100];
+
+    // Get user input
+    printf("Enter the message: ");
+    fgets(message, sizeof(message), stdin);
+
+    // Encrypt the message
+    encryptDecrypt(message);
+    printf("Encrypted Message: %s", message);
+
+    // Decrypt the message (Reapply the same function)
+    encryptDecrypt(message);
+    printf("Decrypted Message: %s", message);
+
+    return 0;
+}
+#include <stdio.h>
+#include <ctype.h>
+
+// Function to encrypt a message using Caesar cipher
+void caesarEncrypt(char text[], int shift) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        if (isalpha(text[i])) {  // Check if the character is a letter
+            char base = isupper(text[i]) ? 'A' : 'a';  // Preserve case
+            text[i] = (text[i] - base + shift) % 26 + base;  // Apply shift
+        }
+    }
+}
+
+int main() {
+    char plaintext[100];
+    int shift;
+
+    // Get input from user
+    printf("Enter the plaintext: ");
+    fgets(plaintext, sizeof(plaintext), stdin);  // Read input text
+
+    printf("Enter the shift value: ");
+    scanf("%d", &shift);
+
+    // Encrypt the text
+    caesarEncrypt(plaintext, shift);
+
+    // Display the result
+    printf("Encrypted Ciphertext: %s\n", plaintext);
+
+    return 0;
+}
+
