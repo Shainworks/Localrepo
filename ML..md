@@ -95,3 +95,47 @@ allElements.size());
  }
  }
 }
+4. import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import java.util.List;
+public class Combobox {
+ public static void main(String[] args) {
+ WebDriver driver = new ChromeDriver();
+ try {
+ driver.get("file:///C:/Users/user/Desktop/combo1.html");
+ driver.manage().window().maximize();
+ Thread.sleep(5000);
+ WebElement dropdown =
+ driver.findElement(By.id("MyDropdown"));
+ Select select = new Select(dropdown);
+ List<WebElement> options =
+ select.getOptions();
+ System.out.println(
+ "Number of options in combo box is: "
+ + options.size());
+ for (WebElement option : options) {
+ System.out.println(option.getText());
+ }
+ } catch (Exception e) {
+e.printStackTrace();
+ } finally {
+ driver.quit();
+ }}}
+Html file
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Combo Box Test</title>
+</head>
+<body>
+ <h2>Select your option:</h2>
+ <select id="MyDropdown">
+ <option value="1">Option One</option>
+ <option value="2">Option Two</option>
+ <option value="3">Option Three</option>
+ </select>
+</body>
+</html>
