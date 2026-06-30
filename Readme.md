@@ -1,347 +1,207 @@
-1. Write a C program for error detection using CRC-CCITT 
-(16-bits).  
-// Include headers   
-#include<stdio.h>   
-#include<string.h>   
-// length of the generator polynomial   
-#define N strlen(gen_poly)   
-// data to be transmitted and received   
-char data[28];   
-// CRC value   
-char check_value[28];   
-// generator polynomial   
-char gen_poly[10];   
-// variables    
-int data_length,i,j;   
-// function that performs XOR operation   
-void XOR(){   
-// if both bits are the same, the output is 0   
-// if the bits are different the output is 1   
-for(j = 1;j < N; j++)   
-check_value[j] = (( check_value[j] == gen_poly[j])?'0':'1');       
-}   
-// Function to check for errors on the receiver side   
-void receiver(){   
-// get the received data   
-    printf("Enter the received data: ");   
-    scanf("%s", data);   
-    printf("\n-----------------------------\n");   
-    printf("Data received: %s", data);   
-// Cyclic Redundancy Check   
-    crc();   
-// Check if the remainder is zero to find the error   
-    for(i=0;(i<N-1) && (check_value[i]!='1');i++);   
-        if(i<N-1)   
-          printf("\nError detected\n\n");   
-        else   
-            printf("\nNo error detected\n\n");   
-}   
-   
-void crc(){   
-    // initializing check_value   
-    for(i=0;i<N;i++)   
-        check_value[i]=data[i];   
-    do{   
-    // check if the first bit is 1 and calls XOR function   
-        if(check_value[0]=='1')   
-            XOR();   
-// Move the bits by 1 position for the next computation   
-        for(j=0;j<N-1;j++)   
-            check_value[j]=check_value[j+1];   
-        // appending a bit from data   
-        check_value[j]=data[i++];   
-    }while(i<=data_length+N-1);   
-// loop until the data ends   
-}   
-   
-int main()   
-{   
-    // get the data to be transmitted   
-    printf("\nEnter data to be transmitted: ");   
-    scanf("%s",data);   
-    printf("\n Enter the Generating polynomial: ");   
-    // get the generator polynomial   
-    scanf("%s",gen_poly);   
-    // find the length of data   
-    data_length=strlen(data);   
-    // appending n-1 zeros to the data   
-    for(i=data_length;i<data_length+N-1;i++)   
-        data[i]='0';   
-    printf("\n----------------------------------------");   
-// print the data with padded zeros   
-    printf("\n Data padded with n-1 zeros : %s",data);   
-    printf("\n----------------------------------------");   
-// Cyclic Redundancy Check   
-    crc();   
-// print the computed check value   
-    printf("\nCRC or Check value is : %s",check_value);   
-// Append data with check_value(CRC)     
-    for(i=data_length;i<data_length+N-1;i++)   
-        data[i]=check_value[i-data_length];   
-    printf("\n----------------------------------------");   
-// printing the final data to be sent   
-    printf("\n Final data to be sent : %s",data);   
-    printf("\n----------------------------------------\n");   
-// Calling the receiver function to check errors   
-    receiver();   
-        return 0;   
-}  
-2. Write a C program to generate Hamming Code for error 
-detection and correction.  
-#include <stdio.h> 
-#include <math.h> 
-int input[32]; 
-int code[32]; 
-int ham_calc(int,int); 
-void main() 
-{ 
- int n,i,p_n = 0,c_l,j,k; 
- printf("Please enter the length of the Data Word: "); 
- scanf("%d",&n); 
- printf("Please enter the Data Word:\n"); 
- for(i=0;i<n;i++) 
- { 
-  scanf("%d",&input[i]); 
- } 
- 
- i=0; 
- while(n>(int)pow(2,i)-(i+1)) 
- { 
-  p_n++; 
-  i++; 
- } 
- c_l = p_n + n; 
- j=k=0; 
- for(i=0;i<c_l;i++) 
- { 
-   
-  if(i==((int)pow(2,k)-1)) 
-  { 
-   code[i]=0; 
-   k++; 
-  } 
-  else 
-  { 
-   code[i]=input[j]; 
-   j++; 
-  } 
- } 
- for(i=0;i<p_n;i++) 
- { 
-  int position = (int)pow(2,i); 
-  int value = ham_calc(position,c_l); 
-  code[position-1]=value; 
- } 
- printf("\nThe calculated Code Word is: "); 
- for(i=0;i<c_l;i++) 
-  printf("%d",code[i]); 
- printf("\n"); 
- printf("Please enter the received Code Word:\n"); 
- for(i=0;i<c_l;i++) 
-  scanf("%d",&code[i]); 
- 
- int error_pos = 0; 
- for(i=0;i<p_n;i++) 
- { 
-  int position = (int)pow(2,i); 
-  int value = ham_calc(position,c_l); 
-  if(value != 0) 
-   error_pos+=position; 
- } 
- if(error_pos == 1) 
-  printf("The received Code Word is correct.\n"); 
- else 
-  printf("Error at bit position: %d\n",error_pos); 
+6) import org.openqa.selenium.By; 
+import org.openqa.selenium.WebDriver; 
+import org.openqa.selenium.chrome.ChromeDriver; 
+public class LoginPage { 
+public static void main(String[] args) throws Exception { 
+WebDriver driver = new ChromeDriver();      
+driver.get("https://the-internet.herokuapp.com/login");       
+driver.findElement(By.id("username")).sendKeys("tomsmith"); 
+driver.findElement(By.id("password")) .sendKeys("SuperSecretPassword!"); 
+driver.findElement(By.id("submit")).click(); 
+Thread.sleep(3000); 
+driver.quit(); 
 } 
-int ham_calc(int position,int c_l) 
+} 
+7)import java.io.File; 
+public class DesktopItemCounter { 
+public static void main(String[] args) { 
+String desktopPath = System.getProperty("user.home") + "\\Desktop"; 
+File desktopFolder = new File(desktopPath); 
+if (desktopFolder.exists() && desktopFolder.isDirectory()) { 
+File[] items = desktopFolder.listFiles(); 
+if (items! null) { 
+System.out.println("Number of items on Desktop: " + items.length); 
+for(File item:items) 
 { 
- int count=0,i,j; 
- i=position-1; 
- while(i<c_l) 
- { 
-  for(j=i;j<i+position;j++) 
-  { 
-   if(code[j] == 1) 
-    count++; 
-  } 
-  i=i+2*position; 
- } 
- if(count%2 == 0) 
-  return 0; 
- else 
-  return 1; 
-}
-3. Write a C program to implement Distance vector Routing 
-algorithm
+System.out.println("-" + item.getName()); 
+} 
+} 
+else 
+{ 
+System.out.println("could not read contents of Desktop"); 
+} 
+} else 
+{ 
+System.out.println("Desktop folder not found at :" + desktopPath); 
+} 
+} 
+} 
+9)import org.openqa.selenium.By; 
+import org.openqa.selenium.WebDriver; 
+import org.openqa.selenium.WebElement; 
+import org.openqa.selenium.chrome.ChromeDriver; 
  
-#include<stdio.h> 
-int dist[50][50],temp[50][50],n,i,j,k,x; 
-void dvr(); 
-int main() 
-{ 
-    printf("\nEnter the number of nodes : "); 
-    scanf("%d",&n); 
-    printf("\nEnter the distance matrix :\n"); 
-    for(i=0;i<n;i++) 
-    { 
-        for(j=0;j<n;j++) 
-        {    
-            scanf("%d",&dist[i][j]); 
-            dist[i][i]=0; 
-            temp[i][j]=j; 
+import java.util.List; 
+ 
+public class Objects { 
+    public static void main(String[] args) { 
+        WebDriver driver = new ChromeDriver(); 
+        driver.get("https://example.com"); 
+        List<WebElement> elements = driver.findElements(By.xpath("//*")); 
+ 
+       System.out.println("Total number of objects on the page: " + elements.size()); 
+ 
+        for (WebElement e : elements) { 
+            System.out.println(e.getTagName()); 
         } 
-        printf("\n"); 
- } 
-     dvr();  
-     printf("enter value of i &j:"); 
-     scanf("%d",&i); 
-  scanf("%d",&j);    
-  printf("enter the new cost"); 
-  scanf("%d",&x);    
-  dist[i][j]=x; 
-  printf("After update\n\n");      
-     dvr(); 
-  return 0;  
-} 
-void dvr() 
-{ 
- for (i = 0; i < n; i++) 
-            for (j = 0; j < n; j++) 
-             for (k = 0; k < n; k++) 
-                 if (dist[i][k] + dist[k][j] < dist[i][j]) 
-                 { 
-                     dist[i][j] = dist[i][k] + dist[k][j]; 
-                     temp[i][j] = k; 
-                 } 
-                  
- for(i=0;i<n;i++) 
-        { 
-            printf("\n\nState value for router %d is \n",i+1); 
-            for(j=0;j<n;j++) 
-                printf("\t\nnode %d via %d Distance%d",j+1,temp[i][j]+1,dist[i][j]); 
-        }    
-    printf("\n\n"); 
  
-}
-4. Write a C program to implement Open Shortest Path First 
-Routing Algorithm 
+        driver.quit(); 
+    } 
+} 
  
-  #include <stdio.h> 
-  #include <string.h> 
-  int main() 
-  { 
-  int count,src_router,i,j,k,w,v,min; 
-  int cost_matrix[100][100],dist[100],last[100]; 
-  int flag[100]; 
-   printf("\n Enter the no of routers"); 
-  scanf("%d",&count);  
-  printf("\n Enter the cost matrix values:"); 
-  for(i=0;i<count;i++) 
-  { 
-  for(j=0;j<count;j++) 
-  { 
-   printf("\n%d->%d:",i,j); 
-  scanf("%d",&cost_matrix[i][j]); 
-  if(cost_matrix[i][j]<0)cost_matrix[i][j]=1000; 
-  } 
-  } 
-   printf("\n Enter the source router:"); 
-  scanf("%d",&src_router); 
-  for(v=0;v<count;v++) 
-  { 
-  flag[v]=0; 
-  last[v]=src_router; 
-  dist[v]=cost_matrix[src_router][v]; 
-  } 
-  flag[src_router]=1; 
-  for(i=0;i<count;i++) 
-  { 
-  min=1000; 
-  for(w=0;w<count;w++) 
-  { 
-  if(!flag[w]) 
-  if(dist[w]<min) 
-  { 
-  v=w; 
-  min=dist[w]; 
-  } 
-  } 
-  flag[v]=1; 
-  for(w=0;w<count;w++) 
-  { 
-  if(!flag[w]) 
-  if(min+cost_matrix[v][w]<dist[w]) 
-  { 
-  dist[w]=min+cost_matrix[v][w]; 
-  last[w]=v; 
-  } 
-  } 
-  } 
-  for(i=0;i<count;i++) 
-  { 
-   printf("\n%d==>%d:Path taken:%d",src_router,i,i); 
-  w=i; 
-  while(w!=src_router) 
-  { 
-   printf("\n<--%d",last[w]);w=last[w]; 
-  } 
-printf("\n Shortest path cost:%d",dist[i]); 
+ 
+ 
+10)import org.openqa.selenium.By; 
+import org.openqa.selenium.WebDriver; 
+import org.openqa.selenium.WebElement; 
+import org.openqa.selenium.chrome.ChromeDriver; 
+import java.util.List; 
+ 
+public class Combobox { 
+    public static void main(String[] args) { 
+        WebDriver driver = new ChromeDriver(); 
+ 
+ driver.get("file:///C:/Users/DELL/Documents/combo1.html"); 
+ 
+     List<WebElement> options =              driver.findElements(By.xpath("//select/option")); 
+ System.out.println("Number of options in combo box is: "+ options.size()); 
+  for (WebElement option : options) { 
+            System.out.println(option.getText()); 
+        } 
+ driver.quit(); 
+    } 
 } 
+<!DOCTYPE html> 
+<html> 
+<head> 
+<title>Combo Box Test</title> 
+</head> 
+<body> 
+<h2>Select your option:</h2> 
+<select> 
+<option>Option One</option> 
+<option>Option Two</option> 
+<option>Option Three</option> 
+</select> 
+</body> 
+</html> 
+8.import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class UpdateExcel {
+
+    public static void main(String[] args) {
+
+        try {
+            // Excel file path
+            String filePath = "D:\\students.xlsx";
+
+            FileInputStream fis = new FileInputStream(filePath);
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            // Student records
+            Object[][] data = {
+                    {101, "Amit", "CSE", 85},
+                    {102, "Riya", "ECE", 90},
+                    {103, "Kiran", "ME", 78},
+                    {104, "Sneha", "EEE", 88},
+                    {105, "Rahul", "Civil", 82},
+                    {106, "Pooja", "ISE", 91}
+            };
+
+            // Update records
+            for (int i = 0; i < data.length; i++) {
+
+                Row row = sheet.getRow(i + 1);
+
+                if (row == null) {
+                    row = sheet.createRow(i + 1);
+                }
+
+                row.createCell(0).setCellValue((Integer) data[i][0]);
+                row.createCell(1).setCellValue((String) data[i][1]);
+                row.createCell(2).setCellValue((String) data[i][2]);
+                row.createCell(3).setCellValue((Integer) data[i][3]);
+            }
+
+            fis.close();
+
+            FileOutputStream fos = new FileOutputStream(filePath);
+            workbook.write(fos);
+
+            fos.close();
+            workbook.close();
+
+            System.out.println("6 Student records updated successfully.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
-5. Write a C Program to implement Border Gateway Protocol 
-(BGP) 
-#include <stdio.h> 
-#include<conio.h> 
-int main() 
-{ 
-int n; 
-int i,j,k; 
-int a[10][10],b[10][10]; 
-printf("\n Enter the number of nodes:"); 
-scanf("%d",&n); 
-for(i=0;i<n;i++) 
-{ 
-for(j=0;j<n;j++) 
-{ 
-printf("\n Enter the distance between the host %d - %d:",i+1,j+1); 
-scanf("%d",&a[i][j]); 
-}} 
-for(i=0;i<n;i++) 
-{ 
-for(j=0;j<n;j++) 
-{ 
-printf("%d\t",a[i][j]); 
-} 
-printf("\n"); 
-} 
-for(k=0;k<n;k++) 
-{ 
-for(i=0;i<n;i++) 
-{ 
-for(j=0;j<n;j++) 
-{ 
-if(a[i][j]>a[i][k]+a[k][j]) 
-{ 
-a[i][j]=a[i][k]+a[k][j]; 
-}}}} 
-for(i=0;i<n;i++) 
-{ 
-for(j=0;j<n;j++) 
-{ 
-b[i][j]=a[i][j]; 
-if(i==j) 
-{ 
-b[i][j]=0; 
-} 
-}} 
-printf("\n The output matrix:\n"); 
-for(i=0;i<n;i++) 
-{ 
-for(j=0;j<n;j++) 
-{ 
-printf("%d\t",b[i][j]); 
-} 
-printf("\n"); 
-} 
-getch(); 
-} 
+1 and 3.
+#include <stdio.h>
+
+int main() {
+    int locks, stocks, barrels;
+    int totalLocks = 0, totalStocks = 0, totalBarrels = 0;
+    float sales, com;
+
+    while (1) {
+        printf("Enter number of locks (-1 to exit): ");
+        scanf("%d", &locks);
+
+        if (locks == -1)
+            break;
+
+        printf("Enter number of stocks and barrels: ");
+        scanf("%d%d", &stocks, &barrels);
+
+        if (locks > 0 && locks <= 70 && totalLocks + locks <= 70)
+            totalLocks += locks;
+        else
+            printf("Invalid locks input.\n");
+
+        if (stocks > 0 && stocks <= 80 && totalStocks + stocks <= 80)
+            totalStocks += stocks;
+        else
+            printf("Invalid stocks input.\n");
+
+        if (barrels > 0 && barrels <= 90 && totalBarrels + barrels <= 90)
+            totalBarrels += barrels;
+        else
+            printf("Invalid barrels input.\n");
+
+        printf("\nTotals: Locks=%d Stocks=%d Barrels=%d\n\n",
+               totalLocks, totalStocks, totalBarrels);
+    }
+
+    sales = totalLocks * 45.0 + totalStocks * 30.0 + totalBarrels * 25.0;
+
+    if (sales > 1800)
+        com = 100 + 120 + 0.20 * (sales - 1800);
+    else if (sales > 1000)
+        com = 100 + 0.15 * (sales - 1000);
+    else
+        com = 0.10 * sales;
+
+    printf("\nTotal Sales = %.2f", sales);
+    printf("\nCommission = %.2f\n", com);
+
+    return 0;
+}
